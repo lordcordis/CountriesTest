@@ -1,0 +1,40 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "countriesListVCTabTitle" : {
+      "comment" : "Title for the countries list tab",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Countries"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Страны"
+          }
+        }
+      }
+    },
+    "favouritedCountriesVCabTitle" : {
+      "comment" : "Title for the favourited countries tab",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Favourited"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Избранные"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

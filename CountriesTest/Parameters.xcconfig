@@ -1,0 +1,11 @@
+//
+//  Parameters.xcconfig
+//  CountriesTest
+//
+//  Created by Роман on 28.01.2025.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+API_BASE_URL = "https://restcountries.com/v3.1/all"
