@@ -13,11 +13,13 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         
         self.networkManager = networkManager
         
-        if Locale.current.identifier == "ru_RU" {
-            self.localeCell = .rus
-        } else {
-            self.localeCell = .unknown
-        }
+//        if Locale.current.identifier == "ru_RU" {
+//            self.localeCell = .rus
+//        } else {
+//            self.localeCell = .unknown
+//        }
+        
+        self.localeCell = LocaleManager.getLocale()
         
         print(localeCell)
         
@@ -150,7 +152,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         
         print(chosenCounry)
         
-        coordinator?.presentDetailedView(country: chosenCounry)
+        coordinator?.presentDetailedView(country: chosenCounry, localizedName: country.nameLocalized)
         
     }
 

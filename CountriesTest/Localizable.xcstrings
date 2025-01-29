@@ -53,7 +53,14 @@
       }
     },
     "Area: %lf" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Площадь: %lf"
+          }
+        }
+      }
     },
     "asia" : {
       "extractionState" : "stale",
@@ -121,7 +128,14 @@
       }
     },
     "Capital: %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Столица: %@"
+          }
+        }
+      }
     },
     "countriesListVCTabTitle" : {
       "comment" : "Title for the countries list tab",
@@ -141,7 +155,14 @@
       }
     },
     "Currency: %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Валюта: %@"
+          }
+        }
+      }
     },
     "dataCantBeDecoded" : {
       "localizations" : {
@@ -243,10 +264,24 @@
       }
     },
     "Official name: %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Официальное название: %@"
+          }
+        }
+      }
     },
     "Population: %lld" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Население: %lld"
+          }
+        }
+      }
     },
     "Retry loading data" : {
       "localizations" : {
