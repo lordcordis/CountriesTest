@@ -14,24 +14,25 @@ struct MainCountriesView: View {
     
     var body: some View {
         NavigationStack {
+//            TextField("Search", text: $viewModel.searchInput)
             List {
-                ForEach(viewModel.countryCacheableList, id: \.name) { country in
-                    MainCountriesCell(countryCacheable: country, localeCell: viewModel.localeCell)
-                        .listRowSeparator(.hidden)
+                if viewModel.searchEnabled {
+                    ForEach(viewModel.countryCacheableList, id: \.name) { country in
+                        MainCountriesCell(countryCacheable: country, localeCell: viewModel.localeCell)
+                            .listRowSeparator(.hidden)
+                    }
+                } else {
+                    ForEach(viewModel.countryCacheableListBackup, id: \.name) { country in
+                        MainCountriesCell(countryCacheable: country, localeCell: viewModel.localeCell)
+                            .listRowSeparator(.hidden)
+                    }
                 }
             }
             .listStyle(.plain)
-
-        }
-    }
-    
-    var searchResults: [Country] {
-        if viewModel.searchEnabled {
-            return viewModel.countriesFullList.filter { country in
-                country.name.common.contains(viewModel.searchInput)
+            .searchable(text: $viewModel.searchInput, isPresented: $viewModel.searchEnabled)
+            .onChange(of: viewModel.searchInput) { oldValue, newValue in
+                viewModel.filterCountries()
             }
-        } else {
-            return viewModel.countriesFullList
         }
     }
 }

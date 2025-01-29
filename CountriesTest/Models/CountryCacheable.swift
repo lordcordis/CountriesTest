@@ -17,7 +17,7 @@ protocol CountryCacheableProtocol {
 
 struct CountryCacheable: CountryCacheableProtocol {
     
-    init(country: Country) {
+    init(country: CountryNetworkResult) {
         self.name = country.name.official
         self.nameLocalized = country.translations["rus"]?.official ?? "unknown"
         self.flagEmoji = country.flag

@@ -56,34 +56,47 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
             throw NetworkManagerError.badURL
         }
         
-        let countries: [Country]? = try await networkManager.fetchData(url: url)
+        let countries: [CountryNetworkResult]? = try await networkManager.fetchData(url: url)
         
         guard let countries = countries else {
             throw NetworkManagerError.listIsEmpty
         }
         
-//        await MainActor.run {
-//            self.countriesFullList.append(contentsOf: countries)
-//        }
-        
         let res = countries.map { CountryCacheable(country: $0)}
         await MainActor.run {
             countryCacheableList = res
+            countryCacheableListBackup = res
         }
-        
-        print(res)
-        
-        
-        
     }
     
-//    var countries = [Country]()
-    @Published var countriesFullList = [Country]()
     @Published var countryCacheableList = [any CountryCacheableProtocol]()
-//    @Published var countriesFilteredList = [Country]()
+    var countryCacheableListBackup = [any CountryCacheableProtocol]()
     
     @Published var searchInput = ""
     @Published var searchEnabled = false
+    
+    func filterCountries() {
+        if searchEnabled {
+            
+            let filtered = countryCacheableListBackup.filter { countryCacheable in
+                switch localeCell {
+                case .rus:
+                    countryCacheable.nameLocalized.contains(searchInput)
+                case .unknown:
+                    countryCacheable.name.contains(searchInput)
+                }
+                
+            }
+            DispatchQueue.main.async {
+                self.countryCacheableList = filtered
+            }
+            
+        } else {
+            DispatchQueue.main.async {
+                self.countryCacheableList = self.countryCacheableListBackup
+            }
+        }
+    }
 
     
 }

@@ -6,7 +6,7 @@
 import Foundation
 
 // MARK: - Country
-struct Country: Codable {
+struct CountryNetworkResult: Codable {
     let flags: Flags
     let name: Name
     let translations: [String: Translation]
@@ -42,4 +42,4 @@ struct Translation: Codable {
     let official, common: String
 }
 
-typealias Countries = [Country]
+typealias Countries = [CountryNetworkResult]
