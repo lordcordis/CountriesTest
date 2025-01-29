@@ -62,11 +62,16 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
             throw NetworkManagerError.listIsEmpty
         }
         
-        print(countries)
+//        await MainActor.run {
+//            self.countriesFullList.append(contentsOf: countries)
+//        }
         
+        let res = countries.map { CountryCacheable(country: $0)}
         await MainActor.run {
-            self.countriesFullList.append(contentsOf: countries)
+            countryCacheableList = res
         }
+        
+        print(res)
         
         
         
@@ -74,6 +79,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
     
 //    var countries = [Country]()
     @Published var countriesFullList = [Country]()
+    @Published var countryCacheableList = [any CountryCacheableProtocol]()
 //    @Published var countriesFilteredList = [Country]()
     
     @Published var searchInput = ""

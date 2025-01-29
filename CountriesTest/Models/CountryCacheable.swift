@@ -10,9 +10,12 @@ import SwiftUICore
 
 protocol CountryCacheableProtocol {
     var name: String {get}
+    var nameLocalized: String {get}
+    var continents: [String] {get}
+    var flagEmoji: String {get}
 }
 
-struct CountryCacheable {
+struct CountryCacheable: CountryCacheableProtocol {
     
     init(country: Country) {
         self.name = country.name.official

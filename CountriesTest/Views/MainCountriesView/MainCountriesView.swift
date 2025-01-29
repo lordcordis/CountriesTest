@@ -15,8 +15,8 @@ struct MainCountriesView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(viewModel.countriesFullList, id: \.name.common) { country in
-                    MainCountriesCell(country: country)
+                ForEach(viewModel.countryCacheableList, id: \.name) { country in
+                    MainCountriesCell(countryCacheable: country, localeCell: viewModel.localeCell)
                         .listRowSeparator(.hidden)
                 }
             }
@@ -38,22 +38,31 @@ struct MainCountriesView: View {
 
 struct MainCountriesCell: View {
     
-    let country: Country
+    let country: CountryCacheableProtocol
+    let localeCell: LocaleCell
     
-    init(country: Country) {
-        self.country = country
+    init(countryCacheable: CountryCacheableProtocol, localeCell: LocaleCell) {
+        self.country = countryCacheable
+        self.localeCell = localeCell
     }
     
     var body: some View {
         GroupBox {
             
             HStack {
-                Text(country.flag)
+                Text(country.flagEmoji)
                     .font(.title)
                     .padding(.trailing)
                 VStack(alignment: .leading) {
-                    Text(country.name.common)
-                    Text(country.continents.first?.rawValue ?? "")
+                    switch localeCell {
+                    case .rus:
+                        Text(country.nameLocalized)
+                    case .unknown:
+                        Text(country.name)
+                    }
+                    
+                    
+                    Text(country.continents.description)
                 }
                 Spacer()
             }
