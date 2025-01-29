@@ -8,4 +8,5 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-API_BASE_URL = "https://restcountries.com/v3.1/all"
+API_BASE_URL = https://restcountries.com/v3.1/all
+API_URL_MAIN_SCREEN = https://restcountries.com/v3.1/all?fields=name,flags,continents,translations,flag

@@ -145,6 +145,7 @@
 			baseConfigurationReferenceRelativePath = Parameters.xcconfig;
 			buildSettings = {
 				API_BASE_URL = "https://restcountries.com/v3.1/all";
+				API_URL_MAIN_SCREEN = "https://restcountries.com/v3.1/all?fields=name,flags,continents,translations,flag";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -180,6 +181,7 @@
 			baseConfigurationReferenceRelativePath = Parameters.xcconfig;
 			buildSettings = {
 				API_BASE_URL = "https://restcountries.com/v3.1/all";
+				API_URL_MAIN_SCREEN = "https://restcountries.com/v3.1/all?fields=name,flags,continents,translations,flag";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -216,6 +218,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				API_BASE_URL = "https://restcountries.com/v3.1/all";
+				API_URL_MAIN_SCREEN = "https://restcountries.com/v3.1/all?fields=name,flags,continents,translations,flag";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -283,6 +286,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				API_BASE_URL = "https://restcountries.com/v3.1/all";
+				API_URL_MAIN_SCREEN = "https://restcountries.com/v3.1/all?fields=name,flags,continents,translations,flag";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;

@@ -8,20 +8,20 @@
 import Foundation
 
 final class NetworkManager {
-    private init() {}
-    static var shared = NetworkManager()
     
-    func fetchAllCountries<T: Codable>() async throws -> T? {
+    weak var delegate: URLSessionTaskDelegate?
+    
+    init() {
         
-        guard let apiEndpoint = Bundle.main.object(forInfoDictionaryKey:"API_BASE_URL") as? String else {
-            throw NetworkManagerError.missingKey
-        }
+    }
+    
+    func fetchData<T: Codable>(url: URL) async throws -> T? {
         
-        guard let endpointURL = URL(string: apiEndpoint) else {
-            throw NetworkManagerError.badURL
-        }
+        print(url.absoluteString)
         
-        let (data, res) = try await URLSession.shared.data(from: endpointURL)
+        let urlSession = URLSession(configuration: .default, delegate: delegate, delegateQueue: nil)
+        
+        let (data, res) = try await urlSession.data(from: url)
         
         guard let response = res as? HTTPURLResponse else {
             throw NetworkManagerError.badData
@@ -45,5 +45,5 @@ final class NetworkManager {
 }
 
 enum NetworkManagerError: Error {
-    case missingKey, badURL, badData, badResponse, dataCantBeDecoded
+    case missingKey, badURL, badData, badResponse, dataCantBeDecoded, listIsEmpty
 }

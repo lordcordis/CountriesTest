@@ -6,25 +6,23 @@
 //
 
 import UIKit
+import SwiftUI
 
 final class MainCountriesListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        view.backgroundColor = .systemGray2
-        
-        Task {
-            guard let countries: [Country]? = try? await NetworkManager.shared.fetchAllCountries() else {return}
-            
-            guard let filteredCountries: [Country] = countries else {return}
-            
-            for country in filteredCountries {
-                print(country.name.common)
-            }
-        }
+        performInitialSetup()
     }
-
-
+    
+    
+    func performInitialSetup() {
+        let manager = NetworkManager()
+        let viewModel = MainCountriesViewModel(networkManager: manager)
+        let hosting = UIHostingController(rootView: MainCountriesView(viewModel: viewModel))
+        showFullscreenHostingController(hosting: hosting)
+    }
 }
+
+
 
