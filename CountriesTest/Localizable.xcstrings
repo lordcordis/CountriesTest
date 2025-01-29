@@ -52,6 +52,9 @@
         }
       }
     },
+    "Area: %lf" : {
+
+    },
     "asia" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -69,6 +72,57 @@
         }
       }
     },
+    "badData" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data is incorrect "
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Получены некорректные данные"
+          }
+        }
+      }
+    },
+    "badResponse" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incorrect network response"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Некорректный ответ сервера"
+          }
+        }
+      }
+    },
+    "badURL" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incorrect URL"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неправильный адрес запроса"
+          }
+        }
+      }
+    },
+    "Capital: %@" : {
+
+    },
     "countriesListVCTabTitle" : {
       "comment" : "Title for the countries list tab",
       "localizations" : {
@@ -80,8 +134,27 @@
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Страны"
+          }
+        }
+      }
+    },
+    "Currency: %@" : {
+
+    },
+    "dataCantBeDecoded" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data cannot be decoded"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Данные не могут быть использованы"
           }
         }
       }
@@ -114,8 +187,40 @@
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Избранные"
+          }
+        }
+      }
+    },
+    "listIsEmpty" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Countries list is empty"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Список пуст"
+          }
+        }
+      }
+    },
+    "missingKey" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Missing URL key"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ключ пуст"
           }
         }
       }
@@ -133,6 +238,22 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Океания"
+          }
+        }
+      }
+    },
+    "Official name: %@" : {
+
+    },
+    "Population: %lld" : {
+
+    },
+    "Retry loading data" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Попробовать снова"
           }
         }
       }

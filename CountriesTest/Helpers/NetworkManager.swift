@@ -24,26 +24,26 @@ final class NetworkManager {
         let (data, res) = try await urlSession.data(from: url)
         
         guard let response = res as? HTTPURLResponse else {
-            throw NetworkManagerError.badData
+            throw NetworkError.badData
         }
         
         guard (200...299).contains(response.statusCode) else {
-            throw NetworkManagerError.badResponse
+            throw NetworkError.badResponse
         }
         
         do {
             guard let decodedData = try? JSONDecoder().decode(T.self, from: data) else {
-                throw NetworkManagerError.dataCantBeDecoded
+                let string = String.init(data: data, encoding: .utf8)
+                print(string)
+                throw NetworkError.dataCantBeDecoded
             }
             
             return decodedData
             
         } catch {
-            throw NetworkManagerError.dataCantBeDecoded
+            print(error.localizedDescription)
+            throw NetworkError.dataCantBeDecoded
         }
     }
 }
 
-enum NetworkManagerError: Error {
-    case missingKey, badURL, badData, badResponse, dataCantBeDecoded, listIsEmpty
-}

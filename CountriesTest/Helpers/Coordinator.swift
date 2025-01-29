@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class Coordinator {
     
@@ -13,6 +14,15 @@ class Coordinator {
     
     func setViewController(viewController: UIViewController) {
         self.viewController = viewController
+    }
+    
+    func presentDetailedView(country: CountryFullNetworkResponseRight) {
+
+        DispatchQueue.main.async {
+            let hosting = UIHostingController(rootView: CountryDetailedView(country: country))
+            hosting.modalPresentationStyle = .pageSheet
+            self.viewController?.present(hosting, animated: true)
+        }
     }
     
 }

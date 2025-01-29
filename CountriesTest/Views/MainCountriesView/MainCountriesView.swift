@@ -14,16 +14,21 @@ struct MainCountriesView: View {
     
     var body: some View {
         NavigationStack {
-//            TextField("Search", text: $viewModel.searchInput)
             List {
                 if viewModel.searchEnabled {
                     ForEach(viewModel.countryCacheableList, id: \.name) { country in
                         MainCountriesCell(countryCacheable: country, localeCell: viewModel.localeCell)
+                            .onTapGesture {
+                                viewModel.countryCellTapped(country: country)
+                            }
                             .listRowSeparator(.hidden)
                     }
                 } else {
                     ForEach(viewModel.countryCacheableListBackup, id: \.name) { country in
                         MainCountriesCell(countryCacheable: country, localeCell: viewModel.localeCell)
+                            .onTapGesture {
+                                viewModel.countryCellTapped(country: country)
+                            }
                             .listRowSeparator(.hidden)
                     }
                 }
@@ -32,6 +37,11 @@ struct MainCountriesView: View {
             .searchable(text: $viewModel.searchInput, isPresented: $viewModel.searchEnabled)
             .onChange(of: viewModel.searchInput) { oldValue, newValue in
                 viewModel.filterCountries()
+            }
+            .alert(viewModel.alertText, isPresented: $viewModel.alertIsActive) {
+                Button("Retry loading data") {
+                    viewModel.retryLoadingDataButtonPressed()
+                }
             }
         }
     }

@@ -9,6 +9,8 @@ import UIKit
 import SwiftUI
 
 final class MainCountriesListViewController: UIViewController {
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +20,11 @@ final class MainCountriesListViewController: UIViewController {
     
     func performInitialSetup() {
         let manager = NetworkManager()
-        let viewModel = MainCountriesViewModel(networkManager: manager)
+        
+        let coordinator = Coordinator()
+        coordinator.setViewController(viewController: self)
+        
+        let viewModel = MainCountriesViewModel(networkManager: manager, coordinator: coordinator)
         let hosting = UIHostingController(rootView: MainCountriesView(viewModel: viewModel))
         showFullscreenHostingController(hosting: hosting)
     }
