@@ -8,13 +8,6 @@
 import Foundation
 import SwiftUICore
 
-protocol CountryInfoCellProtocol {
-    var name: String {get}
-    var nameLocalized: String {get}
-    var continents: [String] {get}
-    var flagEmoji: String {get}
-}
-
 struct CountryInfoCellModel: CountryInfoCellProtocol {
     
     init(country: CountryMinimalNetworkResult) {

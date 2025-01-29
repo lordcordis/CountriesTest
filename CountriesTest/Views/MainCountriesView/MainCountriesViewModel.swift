@@ -139,7 +139,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
             .appendingPathComponent(country.name, conformingTo: .data)
         
         let queryItems = [
-            URLQueryItem(name: "fields", value: "official,name,capital,population,area,currencies,languages,timezones,latlng,flags")
+            URLQueryItem(name: "fields", value: "official,name,capital,population,area,currencies,languages,timezones,latlng,flags,flag,continents")
         ]
         
         let newnew = newURL.appending(queryItems: queryItems)
