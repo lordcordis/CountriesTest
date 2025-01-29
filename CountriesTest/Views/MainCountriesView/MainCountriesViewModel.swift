@@ -46,7 +46,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         }
     }
     
-    var localeCell: LocaleCell
+    var localeCell: LocaleData
     
     var networkManager: NetworkManager
     
@@ -71,21 +71,21 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
             throw NetworkError.badURL
         }
         
-        let countries: [CountryNetworkResult]? = try await networkManager.fetchData(url: url)
+        let countries: [CountryMinimalNetworkResult]? = try await networkManager.fetchData(url: url)
         
         guard let countries = countries else {
             throw NetworkError.listIsEmpty
         }
         
-        let res = countries.map { CountryCacheable(country: $0)}
+        let res = countries.map { CountryInfoCellModel(country: $0)}
         await MainActor.run {
             countryCacheableList = res
             countryCacheableListBackup = res
         }
     }
     
-    @Published var countryCacheableList = [any CountryCacheableProtocol]()
-    var countryCacheableListBackup = [any CountryCacheableProtocol]()
+    @Published var countryCacheableList = [any CountryInfoCellProtocol]()
+    var countryCacheableListBackup = [any CountryInfoCellProtocol]()
     
     @Published var searchInput = ""
     @Published var searchEnabled = false
@@ -96,7 +96,6 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
             let filtered = countryCacheableListBackup.filter { countryCacheable in
                 switch localeCell {
                 case .rus:
-//                    countryCacheable.nameLocalized.contains(searchInput)
                     countryCacheable.nameLocalized.lowercased().contains(searchInput.lowercased())
                 case .unknown:
                     countryCacheable.name.lowercased().contains(searchInput.lowercased())
@@ -114,7 +113,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         }
     }
     
-    func countryCellTapped(country: CountryCacheableProtocol) {
+    func countryCellTapped(country: CountryInfoCellProtocol) {
         Task {
             try? await presentCountryFullView(country: country)
         }
@@ -124,7 +123,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         setup()
     }
     
-    private func presentCountryFullView(country: CountryCacheableProtocol) async throws {
+    private func presentCountryFullView(country: CountryInfoCellProtocol) async throws {
         print(country.name)
         
         
@@ -145,7 +144,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         
         let newnew = newURL.appending(queryItems: queryItems)
         print(newnew)
-        let countryFull: [CountryFullNetworkResponseRight]? = try await networkManager.fetchData(url: newnew)
+        let countryFull: [CountryFullNetworkResult]? = try await networkManager.fetchData(url: newnew)
         guard let chosenCounry = countryFull?.first else {
             return
         }

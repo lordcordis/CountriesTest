@@ -7,7 +7,7 @@
 import Foundation
 
 struct LocaleManager {
-    static func getLocale() -> LocaleCell {
+    static func getLocale() -> LocaleData {
         if Locale.current.identifier == "ru_RU" {
             return .rus
         } else {

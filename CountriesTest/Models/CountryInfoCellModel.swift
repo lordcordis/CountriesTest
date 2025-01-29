@@ -8,16 +8,16 @@
 import Foundation
 import SwiftUICore
 
-protocol CountryCacheableProtocol {
+protocol CountryInfoCellProtocol {
     var name: String {get}
     var nameLocalized: String {get}
     var continents: [String] {get}
     var flagEmoji: String {get}
 }
 
-struct CountryCacheable: CountryCacheableProtocol {
+struct CountryInfoCellModel: CountryInfoCellProtocol {
     
-    init(country: CountryNetworkResult) {
+    init(country: CountryMinimalNetworkResult) {
         self.name = country.name.official
         self.nameLocalized = country.translations["rus"]?.official ?? "unknown"
         self.flagEmoji = country.flag
@@ -31,7 +31,7 @@ struct CountryCacheable: CountryCacheableProtocol {
     let continents: [String]
     let flagEmoji: String
     
-    func visibleName(locale: LocaleCell) -> String {
+    func visibleName(locale: LocaleData) -> String {
         switch locale {
         case .unknown:
             return name

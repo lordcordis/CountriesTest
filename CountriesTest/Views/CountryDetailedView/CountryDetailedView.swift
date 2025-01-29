@@ -8,35 +8,37 @@
 import SwiftUI
 struct CountryDetailedView: View {
     
-    init(country: CountryFullNetworkResponseRight, localizedName: String) {
+    init(country: CountryFullNetworkResult, localizedName: String) {
         self.country = country
         self.localizedName = localizedName
-        var output = ""
-        country.currencies.forEach({ _, currencyBody in
-            if !output.isEmpty {
-                output.append(", ")
+        
+        self.currencyString = country.currencies
+            .map { _, currency in
+                return "\(currency.name): \(currency.symbol)"
             }
-            
-            output.append("\(currencyBody.name): \(currencyBody.symbol)")
-        })
-        self.currencyString = output
-        self.localeCell = LocaleManager.getLocale()
+            .joined(separator: ", ")
+        
+        self.localeData = LocaleManager.getLocale()
+        
+        self.timeZones = country.timezones.map { $0
+        }.joined(separator: ", ")
     }
     
-    let localeCell: LocaleCell
+    let localeData: LocaleData
     let localizedName: String
-    let country: CountryFullNetworkResponseRight
+    let country: CountryFullNetworkResult
     var currencyString: String
+    var timeZones: String
     
     var body: some View {
         
-        switch localeCell {
+        switch localeData {
         case .rus:
-            Text("Official name: \(localizedName)")
+            Text("\(localizedName)")
                 .font(.headline)
                 .padding()
         case .unknown:
-            Text("Official name: \(country.name.official)")
+            Text("\(country.name.official)")
                 .font(.headline)
                 .padding()
         }
@@ -47,6 +49,7 @@ struct CountryDetailedView: View {
         Text("Population: \(country.population)")
         Text("Area: \(country.area)")
         Text("Currency: \(currencyString)")
+        Text("Timezones: \(timeZones)")
         MapView(latitude: country.latlng.first!, longitude: country.latlng.last!)
         AsyncImage(url: URL(string: country.flags.png))
         

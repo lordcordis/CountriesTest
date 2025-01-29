@@ -16,7 +16,7 @@ class Coordinator {
         self.viewController = viewController
     }
     
-    func presentDetailedView(country: CountryFullNetworkResponseRight, localizedName: String) {
+    func presentDetailedView(country: CountryFullNetworkResult, localizedName: String) {
 
         DispatchQueue.main.async {
             let hosting = UIHostingController(rootView: CountryDetailedView(country: country, localizedName: localizedName))

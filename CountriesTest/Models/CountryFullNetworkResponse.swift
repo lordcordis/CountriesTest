@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CountryFullNetworkResponseRight: Codable {
+struct CountryFullNetworkResult: Codable {
     let name: Name
     let capital: [String]
     let population: Int

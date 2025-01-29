@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@" : {
+
+    },
     "africa" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -264,6 +267,7 @@
       }
     },
     "Official name: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ru" : {
           "stringUnit" : {
@@ -289,6 +293,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Попробовать снова"
+          }
+        }
+      }
+    },
+    "Timezones: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Часовые пояса: %@"
           }
         }
       }

@@ -49,10 +49,10 @@ struct MainCountriesView: View {
 
 struct MainCountriesCell: View {
     
-    let country: CountryCacheableProtocol
-    let localeCell: LocaleCell
+    let country: CountryInfoCellProtocol
+    let localeCell: LocaleData
     
-    init(countryCacheable: CountryCacheableProtocol, localeCell: LocaleCell) {
+    init(countryCacheable: CountryInfoCellProtocol, localeCell: LocaleData) {
         self.country = countryCacheable
         self.localeCell = localeCell
     }
@@ -82,7 +82,7 @@ struct MainCountriesCell: View {
     }
 }
 
-enum LocaleCell {
+enum LocaleData {
     case rus, unknown
 }
 
