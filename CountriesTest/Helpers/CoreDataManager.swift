@@ -16,7 +16,7 @@ class CoreDataManager {
     let context: NSManagedObjectContext
     
     private init() {
-        container = NSPersistentContainer(name: "Model")
+        container = NSPersistentContainer(name: "CountriesTest")
         container.loadPersistentStores { description, error in
             if let error = error {
                 print("Error loading Core Data, \(error.localizedDescription)")
@@ -109,9 +109,15 @@ class CoreDataManager {
         let request = NSFetchRequest<CountryCacheableEntity>(entityName: "CountryCacheableEntity")
         request.predicate = NSPredicate(format: "name == %@", countryName)
         let result = try context.fetch(request)
-        if let countryToDelete = result.first {
+        
+        for countryToDelete in result {
             context.delete(countryToDelete)
-            try context.save()
         }
+        
+        try context.save()
+//        if let countryToDelete = result.first {
+//            
+//            
+//        }
     }
 }

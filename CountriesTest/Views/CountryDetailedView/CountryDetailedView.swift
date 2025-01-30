@@ -22,6 +22,35 @@ struct CountryDetailedView: View {
         self.flagPng = countryCacheable.flagPng
         self.latitude = countryCacheable.latitude
         self.longitude = countryCacheable.longitude
+        
+        do {
+            let isSaved = try CoreDataManager.shared.containsCountry(countryName: countryCacheable.name)
+                    self.countrySavedInFavourites = isSaved
+            print("countrySavedInFavourites \(countrySavedInFavourites)")
+            
+        } catch {
+            self.countrySavedInFavourites = false
+            print(error.localizedDescription)
+        }
+        
+    }
+    
+    func saveCountryInFavourites() {
+        do {
+            try CoreDataManager.shared.saveCountry(country: countryCacheable)
+            self.countrySavedInFavourites = true
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func deleteCountryFromFavourites() {
+        do {
+            try CoreDataManager.shared.deleteCountry(countryName: countryCacheable.name)
+            self.countrySavedInFavourites = true
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
     let countryCacheable: CountryCacheable
@@ -40,18 +69,67 @@ struct CountryDetailedView: View {
     let flagPng: String
     let continents: [String]
     
+    @State var countrySavedInFavourites: Bool
+    
+    func favouriteToggleChanged() {
+        
+        print(countrySavedInFavourites)
+        
+        switch countrySavedInFavourites {
+            
+        case true:
+            do {
+                try CoreDataManager.shared.saveCountry(country: countryCacheable)
+            } catch {
+                print(error.localizedDescription)
+            }
+        case false:
+            do {
+                try CoreDataManager.shared.deleteCountry(countryName: countryCacheable.name)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        
+        do {
+            let countries = try CoreDataManager.shared.retrieveSavedCountries()
+            print(countries?.description)
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        print(countrySavedInFavourites)
+    }
+    
     var body: some View {
         
-        switch localeData {
-        case .rus:
-            Text("\(nameLocalized)")
-                .font(.headline)
-                .padding()
-        case .unknown:
-            Text("\(name)")
-                .font(.headline)
-                .padding()
+        HStack {
+            switch localeData {
+            case .rus:
+                Text("\(nameLocalized)")
+                    .font(.headline)
+                    .padding()
+            case .unknown:
+                Text("\(name)")
+                    .font(.headline)
+                    .padding()
+            }
+            
+            Spacer()
+            
+            Toggle(isOn: $countrySavedInFavourites, label: {
+                Image(systemName: countrySavedInFavourites ? "star.fill" : "star")
+                    .tint(.yellow)
+                    .font(.title3)
+            })
+            .toggleStyle(.button)
+            .tint(.clear)
+            .onChange(of: countrySavedInFavourites, {
+                favouriteToggleChanged()
+            })
         }
+        
+        
         
         Divider()
         

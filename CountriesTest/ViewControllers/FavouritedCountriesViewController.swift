@@ -6,12 +6,23 @@
 //
 
 import UIKit
+import SwiftUI
 
 final class FavouritedCountriesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemGray
+        performInitialSetup()
 
+    }
+    
+    func performInitialSetup() {
+        
+        let coordinator = Coordinator()
+        coordinator.setViewController(viewController: self)
+        
+        let viewModel = FavouritedCountriesViewModel()
+        let hosting = UIHostingController(rootView: FavouritedCountriesView(viewModel: viewModel, coordinator: coordinator))
+        showFullscreenHostingController(hosting: hosting)
     }
 }
