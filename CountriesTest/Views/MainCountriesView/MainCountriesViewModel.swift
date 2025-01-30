@@ -124,8 +124,6 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
     }
     
     private func presentCountryFullView(country: CountryInfoCellProtocol) async throws {
-        print(country.name)
-        
         
         guard let apiEndpoint = Bundle.main.object(forInfoDictionaryKey:"API_URL_COUNTRY_SEARCH") as? String else {
             throw NetworkError.missingKey
@@ -143,15 +141,17 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         ]
         
         let newnew = newURL.appending(queryItems: queryItems)
-        print(newnew)
-        let countryFull: [CountryFullNetworkResult]? = try await networkManager.fetchData(url: newnew)
-        guard let chosenCounry = countryFull?.first else {
-            return
+        
+        let chosenCountryResponse: [CountryFullNetworkResult]? = try await networkManager.fetchData(url: newnew)
+        guard let chosenCountry = chosenCountryResponse?.first else {
+            throw NetworkError.badResponse
         }
         
-        print(chosenCounry)
+        guard let result = CountryCacheable(countryFullNetworkResult: chosenCountry, localizedName: country.nameLocalized) else {
+            throw NetworkError.badResponse
+        }
         
-        coordinator?.presentDetailedView(country: chosenCounry, localizedName: country.nameLocalized)
+        coordinator?.presentDetailedView(country: result, localizedName: country.nameLocalized)
         
     }
 

@@ -8,50 +8,60 @@
 import SwiftUI
 struct CountryDetailedView: View {
     
-    init(country: CountryFullNetworkResult, localizedName: String) {
-        self.country = country
-        self.localizedName = localizedName
-        
-        self.currencyString = country.currencies
-            .map { _, currency in
-                return "\(currency.name): \(currency.symbol)"
-            }
-            .joined(separator: ", ")
-        
+    init(countryCacheable: CountryCacheable) {
         self.localeData = LocaleManager.getLocale()
-        
-        self.timeZones = country.timezones.map { $0
-        }.joined(separator: ", ")
+        self.countryCacheable = countryCacheable
+        self.name = countryCacheable.name
+        self.nameLocalized = countryCacheable.nameLocalized
+        self.currencyString = countryCacheable.currencyString
+        self.timeZones = countryCacheable.timeZones
+        self.capital = countryCacheable.capital
+        self.area = countryCacheable.area
+        self.population = countryCacheable.population
+        self.continents = countryCacheable.continents
+        self.flagPng = countryCacheable.flagPng
+        self.latitude = countryCacheable.latitude
+        self.longitude = countryCacheable.longitude
     }
     
+    let countryCacheable: CountryCacheable
+    
     let localeData: LocaleData
-    let localizedName: String
-    let country: CountryFullNetworkResult
-    var currencyString: String
-    var timeZones: String
+    
+    let name: String
+    let nameLocalized: String
+    let currencyString: String
+    let timeZones: String
+    let capital: String
+    let population: Int
+    let area: Double
+    let latitude: Double
+    let longitude: Double
+    let flagPng: String
+    let continents: [String]
     
     var body: some View {
         
         switch localeData {
         case .rus:
-            Text("\(localizedName)")
+            Text("\(nameLocalized)")
                 .font(.headline)
                 .padding()
         case .unknown:
-            Text("\(country.name.official)")
+            Text("\(name)")
                 .font(.headline)
                 .padding()
         }
         
         Divider()
         
-        Text("Capital: \(country.capital.first ?? "unknown")")
-        Text("Population: \(country.population)")
-        Text("Area: \(country.area)")
+        Text("Capital: \(capital)")
+        Text("Population: \(population)")
+        Text("Area: \(area)")
         Text("Currency: \(currencyString)")
         Text("Timezones: \(timeZones)")
-        MapView(latitude: country.latlng.first!, longitude: country.latlng.last!)
-        AsyncImage(url: URL(string: country.flags.png))
+        MapView(latitude: latitude, longitude: longitude)
+        AsyncImage(url: URL(string: flagPng))
         
         Spacer()
     }

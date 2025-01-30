@@ -16,10 +16,10 @@ class Coordinator {
         self.viewController = viewController
     }
     
-    func presentDetailedView(country: CountryFullNetworkResult, localizedName: String) {
+    func presentDetailedView(country: CountryCacheable, localizedName: String) {
 
         DispatchQueue.main.async {
-            let hosting = UIHostingController(rootView: CountryDetailedView(country: country, localizedName: localizedName))
+            let hosting = UIHostingController(rootView: CountryDetailedView(countryCacheable: country))
             hosting.modalPresentationStyle = .pageSheet
             self.viewController?.present(hosting, animated: true)
         }

@@ -9,6 +9,32 @@ import Foundation
 
 struct CountryCacheable: CountryInfoCellProtocol, CountryDetailedViewProtocol {
     
+    init?(cacheableEntity: CountryCacheableEntity) {
+        
+        guard let name = cacheableEntity.name,
+              let nameLocalized = cacheableEntity.nameLocalized,
+              let currencyString = cacheableEntity.currencyString,
+              let timeZones: String = cacheableEntity.timeZones,
+              let capital = cacheableEntity.capital,
+              let flagEmoji: String = cacheableEntity.flagEmoji,
+                let flagPng: String = cacheableEntity.flagPng,
+              let continents: [String] = cacheableEntity.continents?.components(separatedBy: ",") else
+        { return nil }
+        
+        self.name = name
+        self.nameLocalized = nameLocalized
+        self.currencyString = currencyString
+        self.timeZones = timeZones
+        self.capital = capital
+        self.flagPng = flagPng
+        self.flagEmoji = flagEmoji
+        self.area = cacheableEntity.area
+        self.latitude = cacheableEntity.latitude
+        self.longitude = cacheableEntity.longitude
+        self.population = Int(cacheableEntity.population)
+        self.continents = continents
+    }
+    
     init?(countryFullNetworkResult: CountryFullNetworkResult, localizedName: String) {
         
         self.name = countryFullNetworkResult.name.official
@@ -46,8 +72,8 @@ struct CountryCacheable: CountryInfoCellProtocol, CountryDetailedViewProtocol {
     
     let name: String
     let nameLocalized: String
-    var currencyString: String
-    var timeZones: String
+    let currencyString: String
+    let timeZones: String
     let capital: String
     let population: Int
     let area: Double
