@@ -6,6 +6,8 @@
 //
 
 
+// Enum to represent locale data, either Russian or other locales
 enum LocaleData {
-    case rus, otherThanRus
+    case rus         // Russian locale
+    case otherThanRus // Locale other than Russian
 }

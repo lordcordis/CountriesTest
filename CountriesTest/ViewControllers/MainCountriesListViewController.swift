@@ -8,16 +8,15 @@
 import UIKit
 import SwiftUI
 
+// ViewController for displaying the main countries list
 final class MainCountriesListViewController: UIViewController {
     
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        performInitialSetup()
+        performInitialSetup() // Set up the view controller and view model
     }
     
-    
+    // Set up the network manager, coordinator, and view model for the view
     func performInitialSetup() {
         let manager = NetworkManager()
         
@@ -26,9 +25,6 @@ final class MainCountriesListViewController: UIViewController {
         
         let viewModel = MainCountriesViewModel(networkManager: manager, coordinator: coordinator)
         let hosting = UIHostingController(rootView: MainCountriesView(viewModel: viewModel))
-        showFullscreenHostingController(hosting: hosting)
+        showFullscreenHostingController(hosting: hosting) // Display the view
     }
 }
-
-
-

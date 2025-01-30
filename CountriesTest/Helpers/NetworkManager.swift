@@ -15,7 +15,7 @@ final class NetworkManager {
         
         print(url.absoluteString)
         
-        let urlSession = URLSession(configuration: .default, delegate: delegate, delegateQueue: nil)
+        let urlSession = URLSession(configuration: .default)
         
         let (data, res) = try await urlSession.data(from: url)
         

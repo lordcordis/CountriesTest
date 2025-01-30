@@ -22,6 +22,10 @@ struct MainCountriesView: View {
                         if viewModel.loadingIndicator == .loading {
                             LoadingIndicatorView()
                         }
+                        
+                        if viewModel.forcedOfflineMode {
+                            forcedOfflineModeView
+                        }
                     }
             } else {
                 NoInternetView()
@@ -32,7 +36,7 @@ struct MainCountriesView: View {
     var countriesListView: some View {
         List {
 
-            let countries = viewModel.searchEnabled ? viewModel.countryCacheableList : viewModel.countryCacheableListBackup
+            let countries = viewModel.searchEnabled ? viewModel.countryListFilterable : viewModel.countryListFull
             
             ForEach(countries, id: \.name) { country in
                 MainCountriesCell(countryCacheable: country, localeCell: viewModel.localeCell)
@@ -55,13 +59,24 @@ struct MainCountriesView: View {
                 viewModel.retryLoadingDataButtonPressed()
             }
             Button("Continue in offline mode") {
-                
+                viewModel.loadingIndicator = .notLoading
+                viewModel.forcedOfflineMode = true
             }
         }
     }
+    
+    var forcedOfflineModeView: some View {
+        GroupBox {
+            ContentUnavailableView("App is Offline", // Title of the view
+                                   systemImage: "exclamationmark.triangle", // Icon for the view
+                                   description: Text("The app is currently offline. Please try again later.")) // Description
+            Button("Retry loading data") {
+                viewModel.retryLoadingDataButtonPressed()
+                viewModel.forcedOfflineMode = false
+            }
+        }.padding()
+    }
 }
-
-
 
 
 

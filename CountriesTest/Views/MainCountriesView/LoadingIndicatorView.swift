@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+// View to display a circular loading indicator
 struct LoadingIndicatorView: View {
     var body: some View {
-            ProgressView()
-                .progressViewStyle(.circular)
-                .padding()
+        GroupBox {
+            ProgressView() // Display circular progress indicator
+                .progressViewStyle(.circular) // Style as circular
+                .padding() // Add padding around the indicator
+        }
     }
 }

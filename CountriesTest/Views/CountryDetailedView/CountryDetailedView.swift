@@ -140,7 +140,7 @@ struct CountryDetailedView: View {
                 if origin == .fullList {
                     Toggle(isOn: $countrySavedInFavourites, label: {
                         Image(systemName: countrySavedInFavourites ? "star.fill" : "star")
-                            .tint(.yellow)
+                            .tint(Color("yellowCustom"))
                             .font(.title3)
                     })
                     .toggleStyle(.button)

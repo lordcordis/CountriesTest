@@ -6,6 +6,8 @@
 //
 
 
+// Enum for representing the loading state of an operation
 enum loadingIndicator {
-    case notLoading, loading
+    case notLoading // Not currently loading
+    case loading    // Currently loading
 }

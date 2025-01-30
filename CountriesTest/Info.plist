@@ -8,6 +8,8 @@
 	<string>$(API_URL_MAIN_SCREEN)</string>
 	<key>API_URL_COUNTRY_SEARCH</key>
 	<string>$(API_URL_COUNTRY_SEARCH)</string>
+	<key>API_URL_COUNTRY_SEARCH_QUERIES</key>
+	<string>$(API_URL_COUNTRY_SEARCH_QUERIES)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "App is Offline" : {
+
+    },
     "Area: %lf" : {
       "localizations" : {
         "ru" : {
@@ -12,6 +15,7 @@
       }
     },
     "badData" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -28,6 +32,7 @@
       }
     },
     "badResponse" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -44,6 +49,7 @@
       }
     },
     "badURL" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -117,6 +123,7 @@
       }
     },
     "dataCantBeDecoded" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -160,6 +167,7 @@
       }
     },
     "listIsEmpty" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -176,6 +184,7 @@
       }
     },
     "missingKey" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -230,6 +239,9 @@
           }
         }
       }
+    },
+    "The app is currently offline. Please try again later." : {
+
     },
     "Timezones: %@" : {
       "localizations" : {

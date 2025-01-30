@@ -5,18 +5,18 @@
 //  Created by Роман on 30.01.2025.
 //
 
-
+// Protocol defining the required properties for detailed country information
 protocol CountryDetailedViewProtocol {
-    var name: String {get}
-    var nameLocalized: String {get}
-    var currencyString: String {get}
-    var timeZones: String {get}
-    var capital: String {get}
-    var population: Int {get}
-    var area: Double {get}
-    var latitude: Double {get}
-    var longitude: Double {get}
-    var flagEmoji: String {get}
-    var flagPng: String {get}
-    var continents: [String] {get}
+    var name: String {get}             // Country name
+    var nameLocalized: String {get}    // Localized country name
+    var currencyString: String {get}   // Currency details
+    var timeZones: String {get}        // Time zones
+    var capital: String {get}          // Capital city
+    var population: Int {get}          // Population
+    var area: Double {get}             // Area in square kilometers
+    var latitude: Double {get}         // Latitude
+    var longitude: Double {get}        // Longitude
+    var flagEmoji: String {get}        // Flag emoji
+    var flagPng: String {get}          // Flag PNG URL
+    var continents: [String] {get}     // List of continents
 }

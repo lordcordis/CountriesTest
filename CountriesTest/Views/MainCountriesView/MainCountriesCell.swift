@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+
+// Cell view for displaying country information
 struct MainCountriesCell: View {
     
     let country: CountryInfoCellProtocol
@@ -17,62 +19,25 @@ struct MainCountriesCell: View {
     }
     
     var body: some View {
-        GroupBox {
-            
+        GroupBox { // GroupBox for containing country data
             HStack {
-                Text(country.flagEmoji)
+                Text(country.flagEmoji) // Display country flag emoji
                     .font(.title)
                     .padding(.trailing)
                 VStack(alignment: .leading) {
+                    // Switch name display based on locale
                     switch localeCell {
                     case .rus:
-                        Text(country.nameLocalized)
+                        Text(country.nameLocalized) // Display localized name
                     case .otherThanRus:
-                        Text(country.name)
+                        Text(country.name) // Display official name
                     }
-                    
-                    
+                    // Show list of continents for the country
                     ContinentsView(continents: country.continents)
                 }
                 Spacer()
             }
-            
         }
     }
 }
 
-struct ContinentsView: View {
-    
-    let locale = LocaleManager.getLocale()
-    
-    init(continents: [String]) {
-        
-        switch locale {
-        case .rus:
-            
-            var continentKeys = [String]()
-            continents.forEach { continentString in
-                if let continentEnum = Continent(rawValue: continentString) {
-                    let key = continentEnum.russianText()
-                    continentKeys.append(key)
-                }
-            }
-            textString = continentKeys.joined(separator: ", ")
-            
-            
-        case .otherThanRus:
-            textString = continents.joined(separator: ", ")
-        }
-        
-        
-        
-    }
-    
-    var textString = ""
-    
-    
-    var body: some View {
-        Text(textString)
-            .font(.subheadline)
-    }
-}

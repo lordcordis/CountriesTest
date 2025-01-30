@@ -3,7 +3,6 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
-        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,20 +16,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cGp-iB-Y9t">
-                                <rect key="frame" x="22.666666666666657" y="279" width="348" height="318.99999999999989"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="globe" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ERC-4u-WCR">
+                                <rect key="frame" x="106" y="345.66666666666669" width="181" height="186.00000000000006"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="313.67000000000002" id="9gx-JP-yMr"/>
-                                    <constraint firstAttribute="width" constant="348" id="N8Z-qU-gHD"/>
+                                    <constraint firstAttribute="width" secondItem="ERC-4u-WCR" secondAttribute="height" multiplier="181:187" id="Smf-CU-hPf"/>
+                                    <constraint firstAttribute="height" constant="187.33000000000001" id="SyB-KN-zrJ"/>
+                                    <constraint firstAttribute="width" constant="181" id="wxr-dC-yuq"/>
                                 </constraints>
-                                <imageReference key="image" image="globe" catalog="system" symbolScale="large" renderingMode="original"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="cGp-iB-Y9t" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="8Ls-ad-vch"/>
-                            <constraint firstItem="cGp-iB-Y9t" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="zju-jn-Rzc"/>
+                            <constraint firstItem="ERC-4u-WCR" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="BOR-7K-hrD"/>
+                            <constraint firstItem="ERC-4u-WCR" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="uHf-Cc-qwh"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -39,10 +38,14 @@
             <point key="canvasLocation" x="52.671755725190835" y="374.64788732394368"/>
         </scene>
     </scenes>
+    <color key="tintColor" systemColor="systemIndigoColor"/>
     <resources>
         <image name="globe" catalog="system" width="128" height="123"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemIndigoColor">
+            <color red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

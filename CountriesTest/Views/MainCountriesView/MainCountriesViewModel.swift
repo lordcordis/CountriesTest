@@ -15,14 +15,9 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         
         self.localeCell = LocaleManager.getLocale()
         
-        print(localeCell)
-        
-        
         super.init()
         
-        networkManager.delegate = self
         self.coordinator = coordinator
-        
         
         setup()
         
@@ -30,35 +25,35 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
     
     var coordinator: Coordinator?
     
+    var localeCell: LocaleData
+    
+    var networkManager: NetworkManager
+    
     @Published var alertIsActive = false
     @Published var alertText = ""
     @Published var loadingIndicator: loadingIndicator = .notLoading
+    @Published var forcedOfflineMode = false
     
-    func presentError(text: String) {
+    func presentAlert(text: String) {
         DispatchQueue.main.async {
             self.alertText = text
             self.alertIsActive.toggle()
         }
     }
     
-    var localeCell: LocaleData
-    
-    var networkManager: NetworkManager
-    
     func setup() {
         Task {
             do {
                 try await loadCitiesMainList()
             } catch {
-                print(error.localizedDescription)
-                presentError(text: error.localizedDescription)
+                presentAlert(text: error.localizedDescription)
             }
         }
     }
     
     func loadCitiesMainList() async throws {
         
-        changeLoadingStatus(changeTo: .loading)
+        changeLoadingStatus(to: .loading)
         
         guard let apiEndpoint = Bundle.main.object(forInfoDictionaryKey:"API_URL_MAIN_SCREEN") as? String else {
             throw NetworkError.missingKey
@@ -75,15 +70,16 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         }
         
         let res = countries.map { CountryInfoCellModel(country: $0)}
+        
         await MainActor.run {
-            countryCacheableList = res
-            countryCacheableListBackup = res
-            changeLoadingStatus(changeTo: .notLoading)
+            countryListFilterable = res
+            countryListFull = res
+            changeLoadingStatus(to: .notLoading)
         }
     }
     
-    @Published var countryCacheableList = [any CountryInfoCellProtocol]()
-    var countryCacheableListBackup = [any CountryInfoCellProtocol]()
+    @Published var countryListFilterable = [any CountryInfoCellProtocol]()
+    var countryListFull = [any CountryInfoCellProtocol]()
     
     @Published var searchInput = ""
     @Published var searchEnabled = false
@@ -91,7 +87,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
     func filterCountries() {
         if searchEnabled {
             
-            let filtered = countryCacheableListBackup.filter { countryCacheable in
+            let filtered = countryListFull.filter { countryCacheable in
                 switch localeCell {
                 case .rus:
                     countryCacheable.nameLocalized.lowercased().contains(searchInput.lowercased())
@@ -101,19 +97,23 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
                 
             }
             DispatchQueue.main.async {
-                self.countryCacheableList = filtered
+                self.countryListFilterable = filtered
             }
             
         } else {
             DispatchQueue.main.async {
-                self.countryCacheableList = self.countryCacheableListBackup
+                self.countryListFilterable = self.countryListFull
             }
         }
     }
     
     func countryCellTapped(country: CountryInfoCellProtocol) {
         Task {
-            try? await presentCountryFullView(country: country)
+            do {
+                try await presentCountryFullView(country: country)
+            } catch {
+                presentAlert(text: error.localizedDescription)
+            }
         }
     }
     
@@ -121,21 +121,23 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         setup()
     }
     
-    private func changeLoadingStatus(changeTo: loadingIndicator) {
+    private func changeLoadingStatus(to: loadingIndicator) {
         DispatchQueue.main.async {
-            self.loadingIndicator = changeTo
+            self.loadingIndicator = to
         }
     }
     
     private func presentCountryFullView(country: CountryInfoCellProtocol) async throws {
         
-        changeLoadingStatus(changeTo: .loading)
+        changeLoadingStatus(to: .loading)
         
         defer {
-            changeLoadingStatus(changeTo: .notLoading)
+            changeLoadingStatus(to: .notLoading)
         }
         
-        guard let apiEndpoint = Bundle.main.object(forInfoDictionaryKey:"API_URL_COUNTRY_SEARCH") as? String else {
+        guard let apiEndpoint = Bundle.main.object(forInfoDictionaryKey:"API_URL_COUNTRY_SEARCH") as? String,
+        let queries = Bundle.main.object(forInfoDictionaryKey:"API_URL_COUNTRY_SEARCH_QUERIES") as? String
+        else {
             throw NetworkError.missingKey
         }
         
@@ -147,7 +149,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
             .appendingPathComponent(country.name, conformingTo: .data)
         
         let queryItems = [
-            URLQueryItem(name: "fields", value: "official,name,capital,population,area,currencies,languages,timezones,latlng,flags,flag,continents")
+            URLQueryItem(name: "fields", value: queries)
         ]
         
         let newnew = newURL.appending(queryItems: queryItems)
@@ -162,11 +164,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         }
         
         coordinator?.presentDetailedView(country: result, localizedName: country.nameLocalized, origin: .fullList)
-        
-        
     }
-
-    
 }
 
 

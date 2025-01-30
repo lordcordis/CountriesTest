@@ -7,20 +7,24 @@
 
 import Foundation
 
+// Structure that holds country data, conforming to two protocols: CountryInfoCellProtocol and CountryDetailedViewProtocol
 struct CountryCacheable: CountryInfoCellProtocol, CountryDetailedViewProtocol {
     
+    // Initializer to create a CountryCacheable object from a cached entity
     init?(cacheableEntity: CountryCacheableEntity) {
         
+        // Safely unwrap the values from the cached entity
         guard let name = cacheableEntity.name,
               let nameLocalized = cacheableEntity.nameLocalized,
               let currencyString = cacheableEntity.currencyString,
               let timeZones: String = cacheableEntity.timeZones,
               let capital = cacheableEntity.capital,
               let flagEmoji: String = cacheableEntity.flagEmoji,
-                let flagPng: String = cacheableEntity.flagPng,
+              let flagPng: String = cacheableEntity.flagPng,
               let continents: [String] = cacheableEntity.continents?.components(separatedBy: ",") else
-        { return nil }
+        { return nil } // Return nil if any required value is missing
         
+        // Assign values to properties
         self.name = name
         self.nameLocalized = nameLocalized
         self.currencyString = currencyString
@@ -31,25 +35,28 @@ struct CountryCacheable: CountryInfoCellProtocol, CountryDetailedViewProtocol {
         self.area = cacheableEntity.area
         self.latitude = cacheableEntity.latitude
         self.longitude = cacheableEntity.longitude
-        self.population = Int(cacheableEntity.population)
+        self.population = Int(cacheableEntity.population) // Convert population to an integer
         self.continents = continents
     }
     
+    // Initializer to create a CountryCacheable object from a full network result and localized name
     init?(countryFullNetworkResult: CountryFullNetworkResult, localizedName: String) {
         
+        // Assign values from the network result to properties
         self.name = countryFullNetworkResult.name.official
         self.nameLocalized = localizedName
         self.currencyString = countryFullNetworkResult.currencies
             .map { _, currency in
                 return "\(currency.name): \(currency.symbol)"
             }
-            .joined(separator: ", ")
+            .joined(separator: ", ") // Join multiple currencies into a string
         
-        self.timeZones = countryFullNetworkResult.timezones.map { $0
-        }.joined(separator: ", ")
+        self.timeZones = countryFullNetworkResult.timezones.map { $0 }
+            .joined(separator: ", ") // Join multiple timezones into a string
         
+        // Ensure the capital is available
         guard let capital = countryFullNetworkResult.capital.first else {
-            return nil
+            return nil // Return nil if no capital is found
         }
         
         self.capital = capital
@@ -59,17 +66,18 @@ struct CountryCacheable: CountryInfoCellProtocol, CountryDetailedViewProtocol {
         self.flagPng = countryFullNetworkResult.flags.png
         self.continents = countryFullNetworkResult.continents.map({ continent in
             continent.rawValue
-        })
+        }) // Convert continent enum values to string
         
+        // Ensure latitude and longitude are available
         guard let latitude = countryFullNetworkResult.latlng.first, let longitude =  countryFullNetworkResult.latlng.last else {
-            return nil
+            return nil // Return nil if latitude or longitude are missing
         }
 
         self.latitude = latitude
         self.longitude = longitude
-        
     }
     
+    // Properties to hold country information
     let name: String
     let nameLocalized: String
     let currencyString: String
@@ -82,58 +90,4 @@ struct CountryCacheable: CountryInfoCellProtocol, CountryDetailedViewProtocol {
     let flagEmoji: String
     let flagPng: String
     let continents: [String]
-}
-
-import UIKit
-import PDFKit
-
-extension CountryCacheable {
-    func generatePDF() -> Data? {
-        let pdfMetaData = [
-            kCGPDFContextCreator: "CountriesTest",
-            kCGPDFContextAuthor: "Роман"
-        ]
-        let format = UIGraphicsPDFRendererFormat()
-        format.documentInfo = pdfMetaData as [String: Any]
-
-        let pageWidth: CGFloat = 612
-        let pageHeight: CGFloat = 792
-        let renderer = UIGraphicsPDFRenderer(bounds: CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight), format: format)
-
-        let data = renderer.pdfData { context in
-            context.beginPage()
-            
-            let title = "Информация о стране"
-            let attributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.boldSystemFont(ofSize: 24)
-            ]
-            title.draw(at: CGPoint(x: 20, y: 20), withAttributes: attributes)
-            
-            var yOffset: CGFloat = 60
-            let lineSpacing: CGFloat = 25
-            
-            let countryDetails = """
-            Название: \(name)
-            Локализованное название: \(nameLocalized)
-            Столица: \(capital)
-            Валюта: \(currencyString)
-            Часовые пояса: \(timeZones)
-            Население: \(population)
-            Площадь: \(area) км²
-            Континенты: \(continents.joined(separator: ", "))
-            Координаты: \(latitude), \(longitude)
-            """
-            
-            let detailsAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.systemFont(ofSize: 18)
-            ]
-            
-            for line in countryDetails.components(separatedBy: "\n") {
-                line.draw(at: CGPoint(x: 20, y: yOffset), withAttributes: detailsAttributes)
-                yOffset += lineSpacing
-            }
-        }
-        
-        return data
-    }
 }

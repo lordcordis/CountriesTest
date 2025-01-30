@@ -7,14 +7,17 @@ import Foundation
 import SwiftUI
 
 // MARK: - Country
+// Model representing minimal country information from the network result
 struct CountryMinimalNetworkResult: Codable {
-    let flags: Flags
-    let name: Name
-    let translations: [String: Translation]
-    let flag: String
-    let continents: [Continent]
+    let flags: Flags         // Flags information of the country
+    let name: Name           // Name of the country
+    let translations: [String: Translation] // Translations of country name
+    let flag: String         // Flag emoji of the country
+    let continents: [Continent] // Continent(s) the country belongs to
 }
 
+// MARK: - Continent
+// Enum for representing continents
 enum Continent: String, Codable {
     case africa = "Africa"
     case antarctica = "Antarctica"
@@ -25,49 +28,26 @@ enum Continent: String, Codable {
     case southAmerica = "South America"
 }
 
-extension Continent {
-    func russianText() -> String {
-        switch self {
-        case .africa:
-            "Африка"
-        case .antarctica:
-            "Антарктида"
-        case .asia:
-            "Азия"
-        case .europe:
-            "Европа"
-        case .northAmerica:
-            "Северная Америка"
-        case .oceania:
-            "Океания"
-        case .southAmerica:
-            "Южная Америка"
-        }
-    }
-}
-
-extension Continent {
-    func localizedStringKey() -> LocalizedStringKey {
-        return LocalizedStringKey(self.rawValue)
-    }
-}
-
 // MARK: - Flags
+// Model representing the flag information (PNG, SVG, and alternative)
 struct Flags: Codable {
-    let png: String
-    let svg: String
-    let alt: String
+    let png: String         // URL of PNG flag image
+    let svg: String         // URL of SVG flag image
+    let alt: String         // Alternative text for the flag
 }
 
 // MARK: - Name
+// Model representing the country's name, including common and official names
 struct Name: Codable {
-    let common, official: String
-    let nativeName: [String: Translation]
+    let common, official: String       // Common and official name of the country
+    let nativeName: [String: Translation] // Translations of the country name in different languages
 }
 
 // MARK: - Translation
+// Model for translating the country name to other languages
 struct Translation: Codable {
-    let official, common: String
+    let official, common: String      // Translated official and common names
 }
 
+// Type alias for an array of countries
 typealias Countries = [CountryMinimalNetworkResult]
