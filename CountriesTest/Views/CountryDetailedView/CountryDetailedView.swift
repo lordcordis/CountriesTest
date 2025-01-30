@@ -8,7 +8,7 @@
 import SwiftUI
 struct CountryDetailedView: View {
     
-    init(countryCacheable: CountryCacheable, origin: DetailedViewOrigin) {
+    init(countryCacheable: CountryCacheable, origin: DetailedViewOrigin, coordinator: Coordinator?) {
         self.localeData = LocaleManager.getLocale()
         self.countryCacheable = countryCacheable
         self.name = countryCacheable.name
@@ -23,6 +23,7 @@ struct CountryDetailedView: View {
         self.latitude = countryCacheable.latitude
         self.longitude = countryCacheable.longitude
         self.origin = origin
+        self.coordinator = coordinator
         
         do {
             let isSaved = try CoreDataManager.shared.containsCountry(countryName: countryCacheable.name)
@@ -54,6 +55,13 @@ struct CountryDetailedView: View {
         }
     }
     
+    private func sharePDF(country: CountryCacheable) {
+            guard let pdfData = country.generatePDF() else { return }
+            let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(country.name).pdf")
+            try? pdfData.write(to: tempURL)
+        coordinator?.presentActivity(tempURL: tempURL)
+        }
+    
     let countryCacheable: CountryCacheable
     
     let localeData: LocaleData
@@ -70,6 +78,7 @@ struct CountryDetailedView: View {
     let flagPng: String
     let continents: [String]
     let origin: DetailedViewOrigin
+    var coordinator: Coordinator?
     
     @State var countrySavedInFavourites: Bool
     
@@ -119,6 +128,14 @@ struct CountryDetailedView: View {
                 }
                 
                 Spacer()
+                
+                Button {
+                    sharePDF(country: countryCacheable)
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
+                        .padding(.trailing)
+                }
+
                 
                 if origin == .fullList {
                     Toggle(isOn: $countrySavedInFavourites, label: {

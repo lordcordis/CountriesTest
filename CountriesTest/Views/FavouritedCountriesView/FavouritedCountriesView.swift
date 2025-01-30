@@ -28,17 +28,11 @@ struct FavouritedCountriesView: View {
                     .onTapGesture {
                         coordinator?.presentDetailedView(country: country, localizedName: country.nameLocalized, origin: .favourites)
                     }
-                
-                
-                
             }
         }
         .listStyle(.plain)
         .onAppear {
             viewModel.loadData()
-        }
-        EmptyView().onAppear {
-            print("onap")
         }
     }
 }

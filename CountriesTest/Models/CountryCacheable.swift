@@ -83,3 +83,70 @@ struct CountryCacheable: CountryInfoCellProtocol, CountryDetailedViewProtocol {
     let flagPng: String
     let continents: [String]
 }
+
+import UIKit
+import PDFKit
+
+extension CountryCacheable {
+    func generatePDF() -> Data? {
+        let pdfMetaData = [
+            kCGPDFContextCreator: "CountriesTest",
+            kCGPDFContextAuthor: "Роман"
+        ]
+        let format = UIGraphicsPDFRendererFormat()
+        format.documentInfo = pdfMetaData as [String: Any]
+
+        let pageWidth: CGFloat = 612
+        let pageHeight: CGFloat = 792
+        let renderer = UIGraphicsPDFRenderer(bounds: CGRect(x: 0, y: 0, width: pageWidth, height: pageHeight), format: format)
+
+        let data = renderer.pdfData { context in
+            context.beginPage()
+            
+            let title = "Информация о стране"
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.boldSystemFont(ofSize: 24)
+            ]
+            title.draw(at: CGPoint(x: 20, y: 20), withAttributes: attributes)
+            
+            var yOffset: CGFloat = 60
+            let lineSpacing: CGFloat = 25
+            
+            let countryDetails = """
+            Название: \(name)
+            Локализованное название: \(nameLocalized)
+            Столица: \(capital)
+            Валюта: \(currencyString)
+            Часовые пояса: \(timeZones)
+            Население: \(population)
+            Площадь: \(area) км²
+            Континенты: \(continents.joined(separator: ", "))
+            Координаты: \(latitude), \(longitude)
+            """
+            
+            let detailsAttributes: [NSAttributedString.Key: Any] = [
+                .font: UIFont.systemFont(ofSize: 18)
+            ]
+            
+            for line in countryDetails.components(separatedBy: "\n") {
+                line.draw(at: CGPoint(x: 20, y: yOffset), withAttributes: detailsAttributes)
+                yOffset += lineSpacing
+            }
+            
+            // Добавляем флаг страны
+            if let flagImage = loadFlagImage() {
+                let imageRect = CGRect(x: pageWidth - 150, y: 20, width: 100, height: 60)
+                flagImage.draw(in: imageRect)
+            }
+        }
+        
+        return data
+    }
+    
+    private func loadFlagImage() -> UIImage? {
+        guard let url = URL(string: flagPng),
+              let data = try? Data(contentsOf: url),
+              let image = UIImage(data: data) else { return nil }
+        return image
+    }
+}
