@@ -18,47 +18,71 @@ struct FavouritedCountriesView: View {
             ForEach(viewModel.countries, id: \.name) { country in
                 MainCountriesCell(countryCacheable: country, localeCell: localeData)
                     .listRowSeparator(.hidden)
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) {
+                            viewModel.removeCountry(countryToDelete: country)
+                        } label: {
+                            Text("Delete")
+                        }
+                    }
+                    .onTapGesture {
+                        coordinator?.presentDetailedView(country: country, localizedName: country.nameLocalized, origin: .favourites)
+                    }
+                
+                
+                
             }
         }
         .listStyle(.plain)
         .onAppear {
             viewModel.loadData()
         }
+        EmptyView().onAppear {
+            print("onap")
+        }
     }
 }
 
-class FavouritedCountriesViewModel: ObservableObject {
+final class FavouritedCountriesViewModel: ObservableObject {
+    
+    @Published var countries: [CountryCacheable] = []
     
     init() {
-        
-        do {
-            let countriesRetrieved = try CoreDataManager.shared.retrieveSavedCountries()
-            if let countries = countriesRetrieved {
-                self.countries = countries
-            } else {
-                self.countries = [CountryCacheable]()
-            }
-        } catch {
-            self.countries = [CountryCacheable]()
-            print(error.localizedDescription)
-        }
-        
-        
+        loadData()
     }
     
     func loadData() {
+        fetchCountriesFromCoreData()
+    }
+    
+    func removeCountry(countryToDelete: CountryCacheable) {
         do {
-            let countriesRetrieved = try CoreDataManager.shared.retrieveSavedCountries()
-            if let countries = countriesRetrieved {
-                self.countries = countries
-            } else {
-                self.countries = [CountryCacheable]()
+            if let firstIndex = countries.firstIndex(where: { country in
+                country.name == countryToDelete.name
+            }) {
+                do {
+                    try CoreDataManager.shared.deleteCountry(countryName: countryToDelete.name)
+                    countries.remove(at: firstIndex)
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
-        } catch {
-            self.countries = [CountryCacheable]()
-            print(error.localizedDescription)
         }
     }
     
-    @Published var countries: [CountryCacheable]
+    private func fetchCountriesFromCoreData() {
+        do {
+            if let countriesRetrieved = try CoreDataManager.shared.retrieveSavedCountries() {
+                self.countries = countriesRetrieved
+            } else {
+                self.countries = []
+            }
+        } catch {
+            self.countries = []
+            print("Failed to load countries: \(error.localizedDescription)")
+        }
+    }
+    
+    
 }
+

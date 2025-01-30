@@ -8,7 +8,7 @@
 import SwiftUI
 struct CountryDetailedView: View {
     
-    init(countryCacheable: CountryCacheable) {
+    init(countryCacheable: CountryCacheable, origin: DetailedViewOrigin) {
         self.localeData = LocaleManager.getLocale()
         self.countryCacheable = countryCacheable
         self.name = countryCacheable.name
@@ -22,6 +22,7 @@ struct CountryDetailedView: View {
         self.flagPng = countryCacheable.flagPng
         self.latitude = countryCacheable.latitude
         self.longitude = countryCacheable.longitude
+        self.origin = origin
         
         do {
             let isSaved = try CoreDataManager.shared.containsCountry(countryName: countryCacheable.name)
@@ -68,6 +69,7 @@ struct CountryDetailedView: View {
     let longitude: Double
     let flagPng: String
     let continents: [String]
+    let origin: DetailedViewOrigin
     
     @State var countrySavedInFavourites: Bool
     
@@ -103,44 +105,56 @@ struct CountryDetailedView: View {
     
     var body: some View {
         
-        HStack {
-            switch localeData {
-            case .rus:
-                Text("\(nameLocalized)")
-                    .font(.headline)
-                    .padding()
-            case .unknown:
-                Text("\(name)")
-                    .font(.headline)
-                    .padding()
+        ScrollView(.vertical) {
+            HStack {
+                switch localeData {
+                case .rus:
+                    Text("\(nameLocalized)")
+                        .font(.headline)
+                        .padding()
+                case .unknown:
+                    Text("\(name)")
+                        .font(.headline)
+                        .padding()
+                }
+                
+                Spacer()
+                
+                if origin == .fullList {
+                    Toggle(isOn: $countrySavedInFavourites, label: {
+                        Image(systemName: countrySavedInFavourites ? "star.fill" : "star")
+                            .tint(.yellow)
+                            .font(.title3)
+                    })
+                    .toggleStyle(.button)
+                    .tint(.clear)
+                    .onChange(of: countrySavedInFavourites, {
+                        favouriteToggleChanged()
+                    })
+
+                }
+                
             }
             
-            Spacer()
             
-            Toggle(isOn: $countrySavedInFavourites, label: {
-                Image(systemName: countrySavedInFavourites ? "star.fill" : "star")
-                    .tint(.yellow)
-                    .font(.title3)
-            })
-            .toggleStyle(.button)
-            .tint(.clear)
-            .onChange(of: countrySavedInFavourites, {
-                favouriteToggleChanged()
-            })
+            
+            Divider()
+            
+            Text("Capital: \(capital)")
+            Text("Population: \(population)")
+            Text("Area: \(area)")
+            Text("Currency: \(currencyString)")
+            Text("Timezones: \(timeZones)")
+            MapView(latitude: latitude, longitude: longitude)
+            AsyncImage(url: URL(string: flagPng))
+            
+            Spacer()
         }
         
         
-        
-        Divider()
-        
-        Text("Capital: \(capital)")
-        Text("Population: \(population)")
-        Text("Area: \(area)")
-        Text("Currency: \(currencyString)")
-        Text("Timezones: \(timeZones)")
-        MapView(latitude: latitude, longitude: longitude)
-        AsyncImage(url: URL(string: flagPng))
-        
-        Spacer()
     }
+}
+
+enum DetailedViewOrigin {
+    case fullList, favourites
 }

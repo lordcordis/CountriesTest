@@ -151,7 +151,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
             throw NetworkError.badResponse
         }
         
-        coordinator?.presentDetailedView(country: result, localizedName: country.nameLocalized)
+        coordinator?.presentDetailedView(country: result, localizedName: country.nameLocalized, origin: .fullList)
         
     }
 
