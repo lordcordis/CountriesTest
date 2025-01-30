@@ -132,21 +132,8 @@ extension CountryCacheable {
                 line.draw(at: CGPoint(x: 20, y: yOffset), withAttributes: detailsAttributes)
                 yOffset += lineSpacing
             }
-            
-            // Добавляем флаг страны
-            if let flagImage = loadFlagImage() {
-                let imageRect = CGRect(x: pageWidth - 150, y: 20, width: 100, height: 60)
-                flagImage.draw(in: imageRect)
-            }
         }
         
         return data
-    }
-    
-    private func loadFlagImage() -> UIImage? {
-        guard let url = URL(string: flagPng),
-              let data = try? Data(contentsOf: url),
-              let image = UIImage(data: data) else { return nil }
-        return image
     }
 }

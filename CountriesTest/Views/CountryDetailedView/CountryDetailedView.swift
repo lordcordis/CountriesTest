@@ -157,13 +157,18 @@ struct CountryDetailedView: View {
             
             Divider()
             
-            Text("Capital: \(capital)")
-            Text("Population: \(population)")
-            Text("Area: \(area)")
-            Text("Currency: \(currencyString)")
-            Text("Timezones: \(timeZones)")
+            VStack(alignment: .leading) {
+                Text("Capital: \(capital)")
+                Text("Population: \(population)")
+                Text("Area: \(area)")
+                Text("Currency: \(currencyString)")
+                Text("Timezones: \(timeZones)")
+            }.padding()
+            
             MapView(latitude: latitude, longitude: longitude)
-            AsyncImage(url: URL(string: flagPng))
+            ImageCached(urlString: flagPng, resizeable: true)
+                .frame(height: 150)
+                .padding()
             
             Spacer()
         }
