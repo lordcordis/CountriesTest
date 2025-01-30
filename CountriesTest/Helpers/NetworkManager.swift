@@ -27,17 +27,9 @@ final class NetworkManager {
             throw URLError(.badServerResponse)
         }
         
-        do {
-            guard let decodedData = try? JSONDecoder().decode(T.self, from: data) else {
-                throw URLError(.cannotDecodeRawData)
-            }
-            
-            return decodedData
-            
-        } catch {
-            print(error.localizedDescription)
-            throw URLError(.cannotDecodeRawData)
-        }
+        let decodedData = try JSONDecoder().decode(T.self, from: data)
+        
+        return decodedData
     }
 }
 

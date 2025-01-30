@@ -2,7 +2,14 @@
   "sourceLanguage" : "en",
   "strings" : {
     "App is Offline" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приложение в режиме оффлайн"
+          }
+        }
+      }
     },
     "Area: %lf" : {
       "localizations" : {
@@ -10,57 +17,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Площадь: %lf"
-          }
-        }
-      }
-    },
-    "badData" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data is incorrect "
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Получены некорректные данные"
-          }
-        }
-      }
-    },
-    "badResponse" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Incorrect network response"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Некорректный ответ сервера"
-          }
-        }
-      }
-    },
-    "badURL" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Incorrect URL"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Неправильный адрес запроса"
           }
         }
       }
@@ -122,23 +78,6 @@
         }
       }
     },
-    "dataCantBeDecoded" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Data cannot be decoded"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Данные не могут быть использованы"
-          }
-        }
-      }
-    },
     "Delete" : {
       "localizations" : {
         "ru" : {
@@ -162,40 +101,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Избранные"
-          }
-        }
-      }
-    },
-    "listIsEmpty" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Countries list is empty"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Список пуст"
-          }
-        }
-      }
-    },
-    "missingKey" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Missing URL key"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ключ пуст"
           }
         }
       }
@@ -241,7 +146,14 @@
       }
     },
     "The app is currently offline. Please try again later." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Попробуйте загрузить данные позже"
+          }
+        }
+      }
     },
     "Timezones: %@" : {
       "localizations" : {

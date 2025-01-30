@@ -27,44 +27,31 @@ struct CountryDetailedView: View {
         
         do {
             let isSaved = try CoreDataManager.shared.containsCountry(countryName: countryCacheable.name)
-                    self.countrySavedInFavourites = isSaved
+            self.countrySavedInFavourites = isSaved
             print("countrySavedInFavourites \(countrySavedInFavourites)")
-            
         } catch {
             self.countrySavedInFavourites = false
-            print(error.localizedDescription)
-        }
-        
-    }
-    
-    func saveCountryInFavourites() {
-        do {
-            try CoreDataManager.shared.saveCountry(country: countryCacheable)
-            self.countrySavedInFavourites = true
-        } catch {
-            print(error.localizedDescription)
+            showAlert(text: error.localizedDescription)
         }
     }
     
-    func deleteCountryFromFavourites() {
-        do {
-            try CoreDataManager.shared.deleteCountry(countryName: countryCacheable.name)
-            self.countrySavedInFavourites = true
-        } catch {
-            print(error.localizedDescription)
-        }
+    private func showAlert(text: String) {
+        self.alertText = text
+        self.showAlert.toggle()
     }
     
     private func sharePDF(country: CountryCacheable) {
-            guard let pdfData = country.generatePDF() else { return }
-            let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(country.name).pdf")
-            try? pdfData.write(to: tempURL)
+        guard let pdfData = country.generatePDF() else { return }
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(country.name).pdf")
+        try? pdfData.write(to: tempURL)
         coordinator?.presentActivity(tempURL: tempURL)
-        }
+    }
     
     let countryCacheable: CountryCacheable
     
     let localeData: LocaleData
+    
+    var coordinator: Coordinator?
     
     let name: String
     let nameLocalized: String
@@ -78,13 +65,12 @@ struct CountryDetailedView: View {
     let flagPng: String
     let continents: [String]
     let origin: DetailedViewOrigin
-    var coordinator: Coordinator?
     
     @State var countrySavedInFavourites: Bool
+    @State var showAlert = false
+    @State var alertText = ""
     
     func favouriteToggleChanged() {
-        
-        print(countrySavedInFavourites)
         
         switch countrySavedInFavourites {
             
@@ -92,91 +78,98 @@ struct CountryDetailedView: View {
             do {
                 try CoreDataManager.shared.saveCountry(country: countryCacheable)
             } catch {
-                print(error.localizedDescription)
+                showAlert(text: error.localizedDescription)
             }
         case false:
             do {
                 try CoreDataManager.shared.deleteCountry(countryName: countryCacheable.name)
             } catch {
-                print(error.localizedDescription)
+                showAlert(text: error.localizedDescription)
             }
         }
-        
-        do {
-            let countries = try CoreDataManager.shared.retrieveSavedCountries()
-            print(countries?.description)
-        } catch {
-            print(error.localizedDescription)
-        }
-        
-        print(countrySavedInFavourites)
     }
     
     var body: some View {
         
         ScrollView(.vertical) {
-            HStack {
-                switch localeData {
-                case .rus:
-                    Text(nameLocalized)
-                        .font(.headline)
-                        .padding()
-                case .otherThanRus:
-                    Text(name)
-                        .font(.headline)
-                        .padding()
-                }
-                
-                Spacer()
-                
-                Button {
-                    sharePDF(country: countryCacheable)
-                } label: {
-                    Image(systemName: "square.and.arrow.up")
-                        .padding(.trailing)
-                }
-
-                
-                if origin == .fullList {
-                    Toggle(isOn: $countrySavedInFavourites, label: {
-                        Image(systemName: countrySavedInFavourites ? "star.fill" : "star")
-                            .tint(Color("yellowCustom"))
-                            .font(.title3)
-                    })
-                    .toggleStyle(.button)
-                    .tint(.clear)
-                    .onChange(of: countrySavedInFavourites, {
-                        favouriteToggleChanged()
-                    })
-
-                }
-                
-            }
             
-            
+            headerView
             
             Divider()
             
-            VStack(alignment: .leading) {
-                Text("Capital: \(capital)")
-                Text("Population: \(population)")
-                Text("Area: \(area)")
-                Text("Currency: \(currencyString)")
-                Text("Timezones: \(timeZones)")
-            }.padding()
+            countryDetailedInfoView
             
             MapView(latitude: latitude, longitude: longitude)
-            ImageCached(urlString: flagPng, resizeable: true)
-                .frame(height: 150)
-                .padding()
+            
+            flagFullView
             
             Spacer()
         }
-        
-        
+        .alert(alertText, isPresented: $showAlert) {
+            
+        }
+    }
+    
+    var sharePDFButton: some View {
+        Button {
+            sharePDF(country: countryCacheable)
+        } label: {
+            Image(systemName: "square.and.arrow.up")
+                .padding(.trailing)
+        }
+    }
+    
+    var favouriteToggle: some View {
+        Toggle(isOn: $countrySavedInFavourites, label: {
+            Image(systemName: countrySavedInFavourites ? "star.fill" : "star")
+                .tint(Color("yellowCustom"))
+                .font(.title3)
+        })
+        .toggleStyle(.button)
+        .tint(.clear)
+        .onChange(of: countrySavedInFavourites, {
+            favouriteToggleChanged()
+        })
+    }
+    
+    var countryDetailedInfoView: some View {
+        VStack(alignment: .leading) {
+            Text("Capital: \(capital)")
+            Text("Population: \(population)")
+            Text("Area: \(area)")
+            Text("Currency: \(currencyString)")
+            Text("Timezones: \(timeZones)")
+        }.padding()
+    }
+    
+    var flagFullView: some View {
+        ImageCached(urlString: flagPng, resizeable: true)
+            .frame(height: 150)
+            .padding()
+    }
+    
+    var headerView: some View {
+        HStack {
+            switch localeData {
+            case .rus:
+                Text(nameLocalized)
+                    .font(.headline)
+                    .padding()
+            case .otherThanRus:
+                Text(name)
+                    .font(.headline)
+                    .padding()
+            }
+            
+            Spacer()
+            
+            sharePDFButton
+            
+            if origin == .fullList {
+                favouriteToggle
+            }
+        }
     }
 }
 
-enum DetailedViewOrigin {
-    case fullList, favourites
-}
+

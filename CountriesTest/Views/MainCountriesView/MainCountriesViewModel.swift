@@ -34,6 +34,12 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
     @Published var loadingIndicator: loadingIndicator = .notLoading
     @Published var forcedOfflineMode = false
     
+    @Published var countryListFilterable = [any CountryInfoCellProtocol]()
+    var countryListFull = [any CountryInfoCellProtocol]()
+    
+    @Published var searchInput = ""
+    @Published var searchEnabled = false
+    
     func presentAlert(text: String) {
         DispatchQueue.main.async {
             self.alertText = text
@@ -50,39 +56,6 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
             }
         }
     }
-    
-    func loadCitiesMainList() async throws {
-        
-        changeLoadingStatus(to: .loading)
-        
-        guard let apiEndpoint = Bundle.main.object(forInfoDictionaryKey:"API_URL_MAIN_SCREEN") as? String else {
-            throw NetworkError.missingKey
-        }
-        
-        guard let url = URL(string: apiEndpoint) else {
-            throw NetworkError.badURL
-        }
-        
-        let countries: [CountryMinimalNetworkResult]? = try await networkManager.fetchData(url: url)
-        
-        guard let countries = countries else {
-            throw NetworkError.listIsEmpty
-        }
-        
-        let res = countries.map { CountryInfoCellModel(country: $0)}
-        
-        await MainActor.run {
-            countryListFilterable = res
-            countryListFull = res
-            changeLoadingStatus(to: .notLoading)
-        }
-    }
-    
-    @Published var countryListFilterable = [any CountryInfoCellProtocol]()
-    var countryListFull = [any CountryInfoCellProtocol]()
-    
-    @Published var searchInput = ""
-    @Published var searchEnabled = false
     
     func filterCountries() {
         if searchEnabled {
@@ -127,6 +100,33 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         }
     }
     
+    private func loadCitiesMainList() async throws {
+        
+        changeLoadingStatus(to: .loading)
+        
+        guard let apiEndpoint = Bundle.main.object(forInfoDictionaryKey:"API_URL_MAIN_SCREEN") as? String else {
+            throw NetworkError.missingKey
+        }
+        
+        guard let url = URL(string: apiEndpoint) else {
+            throw URLError(.badURL)
+        }
+        
+        let countries: [CountryMinimalNetworkResult]? = try await networkManager.fetchData(url: url)
+        
+        guard let countries = countries else {
+            throw URLError(.badServerResponse)
+        }
+        
+        let res = countries.map { CountryInfoCellModel(country: $0)}
+        
+        await MainActor.run {
+            countryListFilterable = res
+            countryListFull = res
+            changeLoadingStatus(to: .notLoading)
+        }
+    }
+    
     private func presentCountryFullView(country: CountryInfoCellProtocol) async throws {
         
         changeLoadingStatus(to: .loading)
@@ -142,25 +142,25 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         }
         
         guard let url = URL(string: apiEndpoint) else {
-            throw NetworkError.badURL
+            throw URLError(.badURL)
         }
         
-        let newURL = url
+        let urlCountryBase = url
             .appendingPathComponent(country.name, conformingTo: .data)
         
         let queryItems = [
             URLQueryItem(name: "fields", value: queries)
         ]
         
-        let newnew = newURL.appending(queryItems: queryItems)
+        let urlWithQueries = urlCountryBase.appending(queryItems: queryItems)
         
-        let chosenCountryResponse: [CountryFullNetworkResult]? = try await networkManager.fetchData(url: newnew)
+        let chosenCountryResponse: [CountryFullNetworkResult]? = try await networkManager.fetchData(url: urlWithQueries)
         guard let chosenCountry = chosenCountryResponse?.first else {
-            throw NetworkError.badResponse
+            throw URLError(.badServerResponse)
         }
         
         guard let result = CountryCacheable(countryFullNetworkResult: chosenCountry, localizedName: country.nameLocalized) else {
-            throw NetworkError.badResponse
+            throw URLError(.cannotParseResponse)
         }
         
         coordinator?.presentDetailedView(country: result, localizedName: country.nameLocalized, origin: .fullList)
