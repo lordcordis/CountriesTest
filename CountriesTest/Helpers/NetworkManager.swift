@@ -11,10 +11,6 @@ final class NetworkManager {
     
     weak var delegate: URLSessionTaskDelegate?
     
-    init() {
-        
-    }
-    
     func fetchData<T: Codable>(url: URL) async throws -> T? {
         
         print(url.absoluteString)
@@ -24,25 +20,23 @@ final class NetworkManager {
         let (data, res) = try await urlSession.data(from: url)
         
         guard let response = res as? HTTPURLResponse else {
-            throw NetworkError.badData
+            throw URLError(.badServerResponse)
         }
         
         guard (200...299).contains(response.statusCode) else {
-            throw NetworkError.badResponse
+            throw URLError(.badServerResponse)
         }
         
         do {
             guard let decodedData = try? JSONDecoder().decode(T.self, from: data) else {
-                let string = String.init(data: data, encoding: .utf8)
-                print(string)
-                throw NetworkError.dataCantBeDecoded
+                throw URLError(.cannotDecodeRawData)
             }
             
             return decodedData
             
         } catch {
             print(error.localizedDescription)
-            throw NetworkError.dataCantBeDecoded
+            throw URLError(.cannotDecodeRawData)
         }
     }
 }

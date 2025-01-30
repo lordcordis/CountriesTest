@@ -32,6 +32,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
     
     @Published var alertIsActive = false
     @Published var alertText = ""
+    @Published var loadingIndicator: loadingIndicator = .notLoading
     
     func presentError(text: String) {
         DispatchQueue.main.async {
@@ -57,6 +58,8 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
     
     func loadCitiesMainList() async throws {
         
+        changeLoadingStatus(changeTo: .loading)
+        
         guard let apiEndpoint = Bundle.main.object(forInfoDictionaryKey:"API_URL_MAIN_SCREEN") as? String else {
             throw NetworkError.missingKey
         }
@@ -75,6 +78,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         await MainActor.run {
             countryCacheableList = res
             countryCacheableListBackup = res
+            changeLoadingStatus(changeTo: .notLoading)
         }
     }
     
@@ -117,7 +121,19 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         setup()
     }
     
+    private func changeLoadingStatus(changeTo: loadingIndicator) {
+        DispatchQueue.main.async {
+            self.loadingIndicator = changeTo
+        }
+    }
+    
     private func presentCountryFullView(country: CountryInfoCellProtocol) async throws {
+        
+        changeLoadingStatus(changeTo: .loading)
+        
+        defer {
+            changeLoadingStatus(changeTo: .notLoading)
+        }
         
         guard let apiEndpoint = Bundle.main.object(forInfoDictionaryKey:"API_URL_COUNTRY_SEARCH") as? String else {
             throw NetworkError.missingKey
@@ -147,7 +163,10 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         
         coordinator?.presentDetailedView(country: result, localizedName: country.nameLocalized, origin: .fullList)
         
+        
     }
 
     
 }
+
+

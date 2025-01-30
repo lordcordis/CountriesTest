@@ -32,11 +32,47 @@ struct MainCountriesCell: View {
                     }
                     
                     
-                    Text(country.continents.description)
+                    ContinentsView(continents: country.continents)
                 }
                 Spacer()
             }
             
         }
+    }
+}
+
+struct ContinentsView: View {
+    
+    let locale = LocaleManager.getLocale()
+    
+    init(continents: [String]) {
+        
+        switch locale {
+        case .rus:
+            
+            var continentKeys = [String]()
+            continents.forEach { continentString in
+                if let continentEnum = Continent(rawValue: continentString) {
+                    let key = continentEnum.russianText()
+                    continentKeys.append(key)
+                }
+            }
+            textString = continentKeys.joined(separator: ", ")
+            
+            
+        case .otherThanRus:
+            textString = continents.joined(separator: ", ")
+        }
+        
+        
+        
+    }
+    
+    var textString = ""
+    
+    
+    var body: some View {
+        Text(textString)
+            .font(.subheadline)
     }
 }

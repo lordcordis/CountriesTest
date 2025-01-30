@@ -118,11 +118,11 @@ struct CountryDetailedView: View {
             HStack {
                 switch localeData {
                 case .rus:
-                    Text("\(nameLocalized)")
+                    Text(nameLocalized)
                         .font(.headline)
                         .padding()
                 case .otherThanRus:
-                    Text("\(name)")
+                    Text(name)
                         .font(.headline)
                         .padding()
                 }

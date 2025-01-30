@@ -1,83 +1,12 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%@" : {
-
-    },
-    "africa" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Africa"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Африка"
-          }
-        }
-      }
-    },
-    "americas" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Americas"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Америка"
-          }
-        }
-      }
-    },
-    "antarctic" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Antarctic "
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Антарктида"
-          }
-        }
-      }
-    },
     "Area: %lf" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Площадь: %lf"
-          }
-        }
-      }
-    },
-    "asia" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Asia"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Азия"
           }
         }
       }
@@ -141,10 +70,24 @@
       }
     },
     "Check your network connection and try again." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проверьте свое интернет-подключение и попробуйте еще раз"
+          }
+        }
+      }
     },
     "Continue in offline mode" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продолжить в оффлайн-режиме"
+          }
+        }
+      }
     },
     "countriesListVCTabTitle" : {
       "comment" : "Title for the countries list tab",
@@ -190,21 +133,11 @@
       }
     },
     "Delete" : {
-
-    },
-    "europe" : {
-      "extractionState" : "stale",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Europe"
-          }
-        },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Европа"
+            "state" : "translated",
+            "value" : "Удалить"
           }
         }
       }
@@ -258,33 +191,22 @@
         }
       }
     },
-    "No Internet Connection" : {
-
-    },
-    "oceania" : {
-      "extractionState" : "stale",
+    "No Favorite Countries" : {
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oceania"
-          }
-        },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Океания"
+            "state" : "translated",
+            "value" : "Нет избранных стран"
           }
         }
       }
     },
-    "Official name: %@" : {
-      "extractionState" : "stale",
+    "No Internet Connection" : {
       "localizations" : {
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Официальное название: %@"
+            "value" : "Нет подключения к интернету"
           }
         }
       }
@@ -315,6 +237,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Часовые пояса: %@"
+          }
+        }
+      }
+    },
+    "You haven't added any countries to your favorites yet." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы еще не добавили страны в избранное."
           }
         }
       }

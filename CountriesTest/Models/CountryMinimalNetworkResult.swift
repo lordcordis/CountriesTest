@@ -4,6 +4,7 @@
 //   let countries = try? JSONDecoder().decode(Countries.self, from: jsonData)
 
 import Foundation
+import SwiftUI
 
 // MARK: - Country
 struct CountryMinimalNetworkResult: Codable {
@@ -22,6 +23,33 @@ enum Continent: String, Codable {
     case northAmerica = "North America"
     case oceania = "Oceania"
     case southAmerica = "South America"
+}
+
+extension Continent {
+    func russianText() -> String {
+        switch self {
+        case .africa:
+            "Африка"
+        case .antarctica:
+            "Антарктида"
+        case .asia:
+            "Азия"
+        case .europe:
+            "Европа"
+        case .northAmerica:
+            "Северная Америка"
+        case .oceania:
+            "Океания"
+        case .southAmerica:
+            "Южная Америка"
+        }
+    }
+}
+
+extension Continent {
+    func localizedStringKey() -> LocalizedStringKey {
+        return LocalizedStringKey(self.rawValue)
+    }
 }
 
 // MARK: - Flags

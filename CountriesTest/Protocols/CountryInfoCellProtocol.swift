@@ -4,7 +4,7 @@
 //
 //  Created by Роман on 30.01.2025.
 //
-
+import SwiftUI
 
 protocol CountryInfoCellProtocol {
     var name: String {get}

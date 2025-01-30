@@ -29,7 +29,11 @@ struct FavouritedCountriesView: View {
                         coordinator?.presentDetailedView(country: country, localizedName: country.nameLocalized, origin: .favourites)
                     }
             }
-        }
+        }.overlay(content: {
+            if viewModel.countries.isEmpty {
+                ContentUnavailableView("No Favorite Countries", systemImage: "star.slash", description: Text("You haven't added any countries to your favorites yet."))
+            }
+        })
         .listStyle(.plain)
         .onAppear {
             viewModel.loadData()
