@@ -121,7 +121,7 @@ struct CountryDetailedView: View {
                     Text("\(nameLocalized)")
                         .font(.headline)
                         .padding()
-                case .unknown:
+                case .otherThanRus:
                     Text("\(name)")
                         .font(.headline)
                         .padding()

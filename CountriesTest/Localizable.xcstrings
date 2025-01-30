@@ -140,6 +140,12 @@
         }
       }
     },
+    "Check your network connection and try again." : {
+
+    },
+    "Continue in offline mode" : {
+
+    },
     "countriesListVCTabTitle" : {
       "comment" : "Title for the countries list tab",
       "localizations" : {
@@ -251,6 +257,9 @@
           }
         }
       }
+    },
+    "No Internet Connection" : {
+
     },
     "oceania" : {
       "extractionState" : "stale",

@@ -20,7 +20,7 @@ class Coordinator {
 
         DispatchQueue.main.async {
             let hosting = UIHostingController(rootView: CountryDetailedView(countryCacheable: country, origin: origin, coordinator: self))
-            hosting.modalPresentationStyle = .automatic
+            hosting.modalPresentationStyle = .pageSheet
             self.viewController?.present(hosting, animated: true)
         }
     }

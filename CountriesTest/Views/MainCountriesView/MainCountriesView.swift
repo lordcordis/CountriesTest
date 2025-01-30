@@ -10,6 +10,7 @@ import SwiftUI
 struct MainCountriesView: View {
     
     @StateObject var viewModel: MainCountriesViewModel
+    @StateObject var networkMonitor = NetworkMonitor()
     
     
     var body: some View {
@@ -33,6 +34,21 @@ struct MainCountriesView: View {
                     }
                 }
             }
+            .onAppear {
+                print("onappear")
+            }
+            .overlay(content: {
+                if !networkMonitor.isConnected {
+                    
+                    
+                    ZStack {
+                        Color.clear
+                            .edgesIgnoringSafeArea(.all)
+                            .background(Material.thin)
+                        NoInternetView()
+                    }
+                }
+            })
             .listStyle(.plain)
             .searchable(text: $viewModel.searchInput, isPresented: $viewModel.searchEnabled)
             .onChange(of: viewModel.searchInput) { oldValue, newValue in
@@ -42,48 +58,15 @@ struct MainCountriesView: View {
                 Button("Retry loading data") {
                     viewModel.retryLoadingDataButtonPressed()
                 }
-            }
-        }
-    }
-}
-
-struct MainCountriesCell: View {
-    
-    let country: CountryInfoCellProtocol
-    let localeCell: LocaleData
-    
-    init(countryCacheable: CountryInfoCellProtocol, localeCell: LocaleData) {
-        self.country = countryCacheable
-        self.localeCell = localeCell
-    }
-    
-    var body: some View {
-        GroupBox {
-            
-            HStack {
-                Text(country.flagEmoji)
-                    .font(.title)
-                    .padding(.trailing)
-                VStack(alignment: .leading) {
-                    switch localeCell {
-                    case .rus:
-                        Text(country.nameLocalized)
-                    case .unknown:
-                        Text(country.name)
-                    }
+                Button("Continue in offline mode") {
                     
-                    
-                    Text(country.continents.description)
                 }
-                Spacer()
             }
-            
         }
     }
 }
 
-enum LocaleData {
-    case rus, unknown
-}
+
+
 
 

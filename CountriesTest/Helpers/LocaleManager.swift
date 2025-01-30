@@ -11,7 +11,7 @@ struct LocaleManager {
         if Locale.current.identifier == "ru_RU" {
             return .rus
         } else {
-            return .unknown
+            return .otherThanRus
         }
     }
 }

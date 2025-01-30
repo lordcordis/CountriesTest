@@ -13,12 +13,6 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         
         self.networkManager = networkManager
         
-//        if Locale.current.identifier == "ru_RU" {
-//            self.localeCell = .rus
-//        } else {
-//            self.localeCell = .unknown
-//        }
-        
         self.localeCell = LocaleManager.getLocale()
         
         print(localeCell)
@@ -97,7 +91,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
                 switch localeCell {
                 case .rus:
                     countryCacheable.nameLocalized.lowercased().contains(searchInput.lowercased())
-                case .unknown:
+                case .otherThanRus:
                     countryCacheable.name.lowercased().contains(searchInput.lowercased())
                 }
                 

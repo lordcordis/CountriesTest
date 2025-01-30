@@ -26,7 +26,7 @@ struct CountryInfoCellModel: CountryInfoCellProtocol {
     
     func visibleName(locale: LocaleData) -> String {
         switch locale {
-        case .unknown:
+        case .otherThanRus:
             return name
         case .rus:
             return nameLocalized
