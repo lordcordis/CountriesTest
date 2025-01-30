@@ -6,8 +6,10 @@
 //
 
 import SwiftUI
+
 struct CountryDetailedView: View {
     
+    // Initialize with country data
     init(countryCacheable: CountryCacheable, origin: DetailedViewOrigin, coordinator: Coordinator?) {
         self.localeData = LocaleManager.getLocale()
         self.countryCacheable = countryCacheable
@@ -25,6 +27,7 @@ struct CountryDetailedView: View {
         self.origin = origin
         self.coordinator = coordinator
         
+        // Check if country is saved in favourites
         do {
             let isSaved = try CoreDataManager.shared.containsCountry(countryName: countryCacheable.name)
             self.countrySavedInFavourites = isSaved
@@ -41,6 +44,7 @@ struct CountryDetailedView: View {
     }
     
     private func sharePDF(country: CountryCacheable) {
+        // Share country PDF
         guard let pdfData = country.generatePDF() else { return }
         let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(country.name).pdf")
         try? pdfData.write(to: tempURL)
@@ -48,11 +52,8 @@ struct CountryDetailedView: View {
     }
     
     let countryCacheable: CountryCacheable
-    
     let localeData: LocaleData
-    
     var coordinator: Coordinator?
-    
     let name: String
     let nameLocalized: String
     let currencyString: String
@@ -71,9 +72,8 @@ struct CountryDetailedView: View {
     @State var alertText = ""
     
     func favouriteToggleChanged() {
-        
+        // Handle saving/removing country from favourites
         switch countrySavedInFavourites {
-            
         case true:
             do {
                 try CoreDataManager.shared.saveCountry(country: countryCacheable)
@@ -90,24 +90,15 @@ struct CountryDetailedView: View {
     }
     
     var body: some View {
-        
         ScrollView(.vertical) {
-            
             headerView
-            
             Divider()
-            
             countryDetailedInfoView
-            
             MapView(latitude: latitude, longitude: longitude)
-            
             flagFullView
-            
             Spacer()
         }
-        .alert(alertText, isPresented: $showAlert) {
-            
-        }
+        .alert(alertText, isPresented: $showAlert) {}
     }
     
     var sharePDFButton: some View {
@@ -150,6 +141,7 @@ struct CountryDetailedView: View {
     
     var headerView: some View {
         HStack {
+            // Display country name based on locale
             switch localeData {
             case .rus:
                 Text(nameLocalized)
@@ -160,16 +152,11 @@ struct CountryDetailedView: View {
                     .font(.headline)
                     .padding()
             }
-            
             Spacer()
-            
             sharePDFButton
-            
             if origin == .fullList {
                 favouriteToggle
             }
         }
     }
 }
-
-

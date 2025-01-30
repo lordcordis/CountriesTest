@@ -9,16 +9,20 @@ import SwiftUI
 
 final class FavouritedCountriesViewModel: ObservableObject {
     
+    // Published list of favourited countries
     @Published var countries: [CountryCacheable] = []
     
+    // Initialize and load data
     init() {
         loadData()
     }
     
+    // Load data into the view model
     func loadData() {
         fetchCountriesFromCoreData()
     }
     
+    // Remove a country from the list and Core Data
     func removeCountry(countryToDelete: CountryCacheable) {
         do {
             if let firstIndex = countries.firstIndex(where: { country in
@@ -34,6 +38,7 @@ final class FavouritedCountriesViewModel: ObservableObject {
         }
     }
     
+    // Fetch countries from Core Data
     private func fetchCountriesFromCoreData() {
         do {
             if let countriesRetrieved = try CoreDataManager.shared.retrieveSavedCountries() {

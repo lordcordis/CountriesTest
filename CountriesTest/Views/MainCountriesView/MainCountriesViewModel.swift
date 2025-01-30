@@ -9,37 +9,42 @@ import Foundation
 
 final class MainCountriesViewModel: NSObject, ObservableObject {
     
+    // Initializer with networkManager and coordinator
     init(networkManager: NetworkManager, coordinator: Coordinator?) {
         
         self.networkManager = networkManager
-        
         self.localeCell = LocaleManager.getLocale()
         
         super.init()
         
         self.coordinator = coordinator
-        
         setup()
-        
     }
     
+    // Coordinator for navigation
     var coordinator: Coordinator?
     
+    // Locale data (language preferences)
     var localeCell: LocaleData
     
+    // Network manager to fetch data
     var networkManager: NetworkManager
     
+    // Published variables for UI updates
     @Published var alertIsActive = false
     @Published var alertText = ""
     @Published var loadingIndicator: loadingIndicator = .notLoading
     @Published var forcedOfflineMode = false
     
+    // Country list data
     @Published var countryListFilterable = [any CountryInfoCellProtocol]()
     var countryListFull = [any CountryInfoCellProtocol]()
     
+    // Search functionality
     @Published var searchInput = ""
     @Published var searchEnabled = false
     
+    // Show alert
     func presentAlert(text: String) {
         DispatchQueue.main.async {
             self.alertText = text
@@ -47,6 +52,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         }
     }
     
+    // Setup function to load country data
     func setup() {
         Task {
             do {
@@ -57,9 +63,9 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         }
     }
     
+    // Filter countries based on search input
     func filterCountries() {
         if searchEnabled {
-            
             let filtered = countryListFull.filter { countryCacheable in
                 switch localeCell {
                 case .rus:
@@ -67,12 +73,10 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
                 case .otherThanRus:
                     countryCacheable.name.lowercased().contains(searchInput.lowercased())
                 }
-                
             }
             DispatchQueue.main.async {
                 self.countryListFilterable = filtered
             }
-            
         } else {
             DispatchQueue.main.async {
                 self.countryListFilterable = self.countryListFull
@@ -80,6 +84,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         }
     }
     
+    // Handle country cell tap
     func countryCellTapped(country: CountryInfoCellProtocol) {
         Task {
             do {
@@ -90,16 +95,19 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         }
     }
     
+    // Retry loading data
     func retryLoadingDataButtonPressed() {
         setup()
     }
     
+    // Update loading status
     private func changeLoadingStatus(to: loadingIndicator) {
         DispatchQueue.main.async {
             self.loadingIndicator = to
         }
     }
     
+    // Load list of countries
     private func loadCitiesMainList() async throws {
         
         changeLoadingStatus(to: .loading)
@@ -127,6 +135,7 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         }
     }
     
+    // Present detailed country view
     private func presentCountryFullView(country: CountryInfoCellProtocol) async throws {
         
         changeLoadingStatus(to: .loading)
@@ -166,5 +175,3 @@ final class MainCountriesViewModel: NSObject, ObservableObject {
         coordinator?.presentDetailedView(country: result, localizedName: country.nameLocalized, origin: .fullList)
     }
 }
-
-
